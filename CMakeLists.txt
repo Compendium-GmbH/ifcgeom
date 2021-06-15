@@ -3,7 +3,9 @@ project(ifcgeom)
 
 include(cmake/pkg.cmake)
 
-express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
+if (NOT TARGET ifc2x3)
+    express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
+endif ()
 
 # LIB
 add_library(ifcgeom INTERFACE)
