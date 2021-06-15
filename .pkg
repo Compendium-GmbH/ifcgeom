@@ -1,0 +1,8 @@
+[ifctools]
+  url=git@github.com:Compendium-GmbH/ifctools.git
+  branch=init
+  commit=5f37a2e568850d18d1ee076018eb7a7ece9dfdf4
+[cgal]
+  url=git@github.com:baumhaus-project/cgal.git
+  branch=master
+  commit=bec948e7ca0f9a535ef9238058e136c3a15d70b4

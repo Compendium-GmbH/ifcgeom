@@ -1,0 +1,6 @@
+/*build*
+/.idea
+/deps
+/.vs
+.DS_Store
+.clang-tidy
