@@ -5,10 +5,11 @@
 #include "context.h"
 #include "io.h"
 
-#include "ifctools/filters.h"
-#include "ifctools/queries.h"
+#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/tools/queries.h"
 
 #include "IFC2X3/IfcRepresentationItem.h"
+#include "IFC2X3/IfcRepresentation.h"
 
 #include "cista/containers/hash_map.h"
 
@@ -40,14 +41,14 @@ inline void iterate_repr(type_map& map,
 }
 
 inline void map_geometry_types(context& ctx, type_map& map) {
-  auto e = ifctools::filter_entities<IFC2X3::IfcProduct>(ctx.model_);
+  auto e = filter_entities<IFC2X3::IfcProduct>(ctx.model_);
   for (auto const product : e) {
     // Product Representations
     if (product->Representation_.has_value()) {
       iterate_repr(map, product->Representation_.value());
     }
     // Aggregated Representations
-    auto s = ifctools::repr_by_guid(ctx.element_part_map_, product->GlobalId_);
+    auto s = repr_by_guid(ctx.element_part_map_, product->GlobalId_);
     for (auto const repr : s) {
       iterate_repr(map, repr);
     }

@@ -12,12 +12,16 @@
 #include "CGAL/Polyhedron_3.h"
 
 #include "IFC2X3/parser.h"
+#include "IFC2X3/IfcBuildingElementPart.h"
+#include "IFC2X3/IfcRelAggregates.h"
 
 #include "step/write.h"
 
 #include "cista/mmap.h"
+#include "cista/containers/hash_map.h"
 
-#include "ifctools/queries.h"
+#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/tools/queries.h"
 
 namespace ifcgeom {
 
@@ -32,9 +36,6 @@ typedef CGAL::Vector_3<K> Vector_3;
 typedef CGAL::Vector_2<K> Vector_2;
 typedef CGAL::Direction_3<K> Direction_3;
 typedef CGAL::Direction_2<K> Direction_2;
-
-using building_elements = std::vector<IFC2X3::IfcBuildingElementPart*>;
-using element_part_map = cista::raw::hash_map<std::string, building_elements>;
 
 struct repr_type;
 using type_map = cista::raw::hash_map<std::string, repr_type*>;
@@ -53,7 +54,7 @@ struct context {
   void load(cista::mmap const& input) {
     model_ = IFC2X3::parse(
         utl::cstr{reinterpret_cast<char const*>(input.data()), input.size()});
-    element_part_map_ = ifctools::create_element_part_map(model_);
+    element_part_map_ = create_element_part_map(model_);
   }
 
   void load(std::string const& path) {

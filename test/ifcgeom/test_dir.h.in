@@ -1,0 +1,2 @@
+#pragma once
+#define TEST_EXECUTION_DIR "@CMAKE_CURRENT_SOURCE_DIR@"

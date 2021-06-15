@@ -3,9 +3,6 @@
 #include <fstream>
 #include <iostream>
 
-#include "ifctools/filters.h"
-#include "ifctools/queries.h"
-
 #include "utl/concat.h"
 #include "utl/parser/cstr.h"
 
@@ -16,6 +13,8 @@
 
 #include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/match.h"
+
+#include "ifcgeom/tools/queries.h"
 
 namespace ifcgeom {
 
@@ -32,7 +31,7 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
     }
   }
 
-  auto shapes = ifctools::repr_by_guid(ctx.element_part_map_, p->GlobalId_);
+  auto shapes = repr_by_guid(ctx.element_part_map_, p->GlobalId_);
   for (auto const repr : shapes) {
     for (auto const& repr : repr->Representations_) {
       for (auto const& item : repr->Items_) {
@@ -43,6 +42,13 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
     }
   }
   return vec;
+}std::vector<Point_3> gather_product_vertices(context& ctx,
+                                             char const* c) {
+  auto p = get_entity_by_guid<IFC2X3::IfcProduct>(ctx.model_, c);
+  if(p.has_value()){
+    return gather_product_vertices(ctx, p.value());
+  }
+  return std::vector<Point_3 >{};
 }
 
 }  // namespace ifcgeom

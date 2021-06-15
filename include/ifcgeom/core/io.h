@@ -2,7 +2,7 @@
 #include <string_view>
 #include <vector>
 
-#include "context.h"
+#include "ifcgeom/core/context.h"
 
 #include "boost/algorithm/string.hpp"
 #include "boost/filesystem.hpp"

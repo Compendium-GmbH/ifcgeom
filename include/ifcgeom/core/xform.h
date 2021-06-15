@@ -1,3 +1,5 @@
+#pragma once
+
 #include "IFC2X3/IfcAxis2Placement2D.h"
 #include "IFC2X3/IfcAxis2Placement3D.h"
 #include "IFC2X3/IfcDirection.h"
