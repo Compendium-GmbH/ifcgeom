@@ -17,7 +17,7 @@
 [express2cpp]
   url=git@github.com:baumhaus-project/express2cpp.git
   branch=master
-  commit=b54fbedff54cc23efd3bd44a028371b35b875816
+  commit=c4cb7117070e5fc733c8012078171409fdfe8d75
 [boost]
   url=git@github.com:motis-project/boost.git
   branch=master
@@ -25,4 +25,4 @@
 [cgal]
   url=git@github.com:baumhaus-project/cgal.git
   branch=master
-  commit=ef36b39f240b95d60dbe8cfe7736101118d0f1e5
+  commit=eb3e530fa43d2324978e57a480a9123ee19a7d80

@@ -12,7 +12,7 @@ namespace ifcgeom {
 
 std::vector<Point_3> loop(IFC2X3::IfcLoop const* loop) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{loop->name()}, __func__);
+  render_err_log.emplace_back(std::string{loop->name()});
   return vertices;
 }
 
@@ -26,20 +26,18 @@ std::vector<Point_3> poly_loop(IFC2X3::IfcPolyLoop const* loop) {
 
 std::vector<Point_3> vertex_loop(IFC2X3::IfcPolyLoop const* loop) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{loop->name()}, __func__);
+  render_err_log.emplace_back(std::string{loop->name()});
   return vertices;
 }
 
 std::vector<Point_3> edge_loop(IFC2X3::IfcPolyLoop const* loop) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{loop->name()}, __func__);
+  render_err_log.emplace_back(std::string{loop->name()});
   return vertices;
 }
 
 std::vector<Point_3> loop_handler(IFC2X3::IfcLoop* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices, match(item, poly_loop, vertex_loop, edge_loop, loop));
-  return vertices;
+  return match(item, poly_loop, vertex_loop, edge_loop, loop);
 }
 
 }  // namespace ifcgeom

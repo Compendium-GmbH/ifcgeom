@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <CGAL/Direction_2.h>
 #include <CGAL/Direction_3.h>
 #include <CGAL/Point_2.h>
@@ -11,45 +13,35 @@
 #include "CGAL/Exact_predicates_inexact_constructions_kernel.h"
 #include "CGAL/Polyhedron_3.h"
 
-#include "IFC2X3/parser.h"
 #include "IFC2X3/IfcBuildingElementPart.h"
 #include "IFC2X3/IfcRelAggregates.h"
+#include "IFC2X3/parser.h"
 
 #include "step/write.h"
 
-#include "cista/mmap.h"
 #include "cista/containers/hash_map.h"
+#include "cista/mmap.h"
 
 #include "ifcgeom/tools/filters.h"
 #include "ifcgeom/tools/queries.h"
 
 namespace ifcgeom {
 
-typedef CGAL::Exact_predicates_inexact_constructions_kernel K;
+using K = CGAL::Exact_predicates_inexact_constructions_kernel;
 
-typedef CGAL::Aff_transformation_3<K> Xform_3;
-typedef CGAL::Aff_transformation_2<K> Xform_2;
-typedef CGAL::Polyhedron_3<K> Polyhedron_3;
-typedef CGAL::Point_2<K> Point_2;
-typedef CGAL::Point_3<K> Point_3;
-typedef CGAL::Vector_3<K> Vector_3;
-typedef CGAL::Vector_2<K> Vector_2;
-typedef CGAL::Direction_3<K> Direction_3;
-typedef CGAL::Direction_2<K> Direction_2;
-
-struct repr_type;
-using type_map = cista::raw::hash_map<std::string, repr_type*>;
-
-struct repr_type {
-  unsigned count{1};
-  std::string func;
-
-  type_map children;
-};
+using Xform_3 = CGAL::Aff_transformation_3<K>;
+using Xform_2 = CGAL::Aff_transformation_2<K>;
+using Polyhedron_3 = CGAL::Polyhedron_3<K>;
+using Point_2 = CGAL::Point_2<K>;
+using Point_3 = CGAL::Point_3<K>;
+using Vector_3 = CGAL::Vector_3<K>;
+using Vector_2 = CGAL::Vector_2<K>;
+using Direction_3 = CGAL::Direction_3<K>;
+using Direction_2 = CGAL::Direction_2<K>;
 
 struct context {
   context() = default;
-  context(std::string const& path) { load(path); }
+  explicit context(std::string const& path) { load(path); }
 
   void load(cista::mmap const& input) {
     model_ = IFC2X3::parse(
@@ -62,7 +54,7 @@ struct context {
     load(input);
   }
 
-  void write(std::string const& path) {
+  void write(std::string const& path) const {
     auto out_file = std::ofstream{path};
     step::write(out_file, model_);
   }
@@ -71,10 +63,10 @@ struct context {
   element_part_map element_part_map_;
 };
 
-type_map render_err_log_;
-unsigned render_resolution_ = 36;
-double tolerance_ = 0.001;
+static std::vector<std::string> render_err_log{};
+unsigned const render_resolution = 36;
+double const tolerance = 0.001;
 
-std::vector<context> contexts;
+std::vector<context> const contexts;
 
 }  // namespace ifcgeom

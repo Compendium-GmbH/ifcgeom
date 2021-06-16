@@ -12,20 +12,18 @@ namespace ifcgeom {
 
 std::vector<Point_3> geometric_set(IFC2X3::IfcGeometricSet const* set) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{set->name()}, __func__);
+  render_err_log.emplace_back(std::string{set->name()});
   return vertices;
 }
 std::vector<Point_3> geometric_crv_set(
     IFC2X3::IfcGeometricCurveSet const* set) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{set->name()}, __func__);
+  render_err_log.emplace_back(std::string{set->name()});
   return vertices;
 }
 
 std::vector<Point_3> geometric_set_handler(IFC2X3::IfcGeometricSet* set) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices, match(set, geometric_crv_set, geometric_set));
-  return vertices;
+  return match(set, geometric_crv_set, geometric_set);
 }
 
 }  // namespace ifcgeom

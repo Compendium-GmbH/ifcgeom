@@ -51,7 +51,7 @@ std::vector<Point_3> faceted_brep(IFC2X3::IfcFacetedBrep const* brep) {
 std::vector<Point_3> faceted_brep_with_voids(
     IFC2X3::IfcFacetedBrepWithVoids const* brep) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{brep->name()}, __func__);
+  render_err_log.emplace_back(std::string{brep->name()});
   return vertices;
 }
 
@@ -77,13 +77,13 @@ std::vector<Point_3> revolved_area(
     IFC2X3::IfcRevolvedAreaSolid const* revolved) {
   std::vector<Point_3> vertices;
   auto swept_area = profile_def_handler(revolved->SweptArea_);
-  add_to_map(render_err_log_, std::string{revolved->name()}, __func__);
+  render_err_log.emplace_back(std::string{revolved->name()});
   return vertices;
 }
 
 std::vector<Point_3> surface_curve(
     IFC2X3::IfcSurfaceCurveSweptAreaSolid const* crv) {
-  add_to_map(render_err_log_, std::string{crv->name()}, __func__);
+  render_err_log.emplace_back(std::string{crv->name()});
   return std::vector<Point_3>{};
 }
 
@@ -92,7 +92,7 @@ std::vector<Point_3> surface_curve(
 #pragma region IfcCsgSolid
 
 std::vector<Point_3> csg_solid(IFC2X3::IfcCsgSolid const* csg) {
-  add_to_map(render_err_log_, std::string{csg->name()}, __func__);
+  render_err_log.emplace_back(std::string{csg->name()});
   return std::vector<Point_3>{};
 }
 
@@ -101,25 +101,22 @@ std::vector<Point_3> csg_solid(IFC2X3::IfcCsgSolid const* csg) {
 #pragma region IfcSweptDiskSolid
 
 std::vector<Point_3> swept_disk(IFC2X3::IfcSweptDiskSolid const* swept) {
-  add_to_map(render_err_log_, std::string{swept->name()}, __func__);
+  render_err_log.emplace_back(std::string{swept->name()});
   return std::vector<Point_3>{};
 }
 
 #pragma endregion
 
 std::vector<Point_3> solid_model_handler(IFC2X3::IfcSolidModel* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices, match(item,
-                              // IfcManifoldSolidBrep
-                              faceted_brep_with_voids, faceted_brep,
-                              // IfcSweptAreaSolid
-                              extruded_area, revolved_area, surface_curve,
-                              // IfcCsgSolid
-                              csg_solid,
-                              // IfcSweptDiskSolid
-                              swept_disk));
-
-  return vertices;
+  return match(item,
+               // IfcManifoldSolidBrep
+               faceted_brep_with_voids, faceted_brep,
+               // IfcSweptAreaSolid
+               extruded_area, revolved_area, surface_curve,
+               // IfcCsgSolid
+               csg_solid,
+               // IfcSweptDiskSolid
+               swept_disk);
 }
 
 }  // namespace ifcgeom

@@ -14,19 +14,17 @@ namespace ifcgeom {
 
 std::vector<Point_3> face_bound(IFC2X3::IfcFaceBound const* face) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{face->name()}, __func__);
+  render_err_log.emplace_back(std::string{face->name()});
   return vertices;
 }
 std::vector<Point_3> face_outer_bound(IFC2X3::IfcFaceOuterBound const* face) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{face->name()}, __func__);
+  render_err_log.emplace_back(std::string{face->name()});
   return vertices;
 }
 
 std::vector<Point_3> face_bound_handler(IFC2X3::IfcFaceBound* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices, match(item, face_outer_bound, face_bound));
-  return vertices;
+  return match(item, face_outer_bound, face_bound);
 }
 
 }  // namespace ifcgeom

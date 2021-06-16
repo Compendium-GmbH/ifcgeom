@@ -7,6 +7,7 @@
 
 #include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/context.h"
+#include "ifcgeom/core/io.h"
 #include "ifcgeom/core/render.h"
 
 #include "ifcgeom/tools/filters.h"
@@ -35,7 +36,7 @@ int main(int argc, char** argv) {
   }
 
   std::cout << std::endl;
-  ifcgeom::print(ifcgeom::render_err_log_);
+  ifcgeom::print_distribution(ifcgeom::render_err_log);
 
   std::cout << std::endl;
   auto const end = std::chrono::high_resolution_clock::now();
