@@ -33,6 +33,8 @@ jobs:
             cxx: clang++-10
             cc: clang-10
             mode: Debug
+            cxxflags: -stdlib=libc++
+            ldflags: -lc++abi
             lint: true
             os: ubuntu-latest
     steps:
@@ -49,10 +51,11 @@ jobs:
           cmake \
             -G Ninja -S . -B build \
             -DBUILD_SHARED_LIBS=OFF \
-            -DCGAL_HEADER_ONLY=1 \
             -DCGAL_NO_GMP=1 \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
+            -DCMAKE_CXX_FLAGS="${{ matrix.config.cxxflags }}" \
+            -DCMAKE_CXX_LINKER_FLAGS=${{ matrix.config.ldflags }}" \
             -DCMAKE_BUILD_TYPE=${{ matrix.config.mode }} \
             -DIFCGEOM_LINT=${{ matrix.config.lint }}
 
