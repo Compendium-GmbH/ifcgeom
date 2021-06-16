@@ -41,7 +41,7 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Install Tools
         run: |
-          apt-get install
+          apt-get install \
             clang++-10
 
       # ==== BUILD ====
