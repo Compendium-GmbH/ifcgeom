@@ -15,7 +15,8 @@ auto match(Parent&& p, Fn&& f) {
     return f(casted);
   } else {
     auto root = reinterpret_cast<step::root_entity*>(p);
-    add_to_map(render_err_log_, std::string{root->name()}, __func__);
+    auto arg = typeid(utl::first_argument<Fn>(p)).name();
+    add_to_map(render_err_log_, std::string{root->name()}, arg);
     return std::vector<Point_3>{};
     // throw std::runtime_error{"no matching class found"};
   }
