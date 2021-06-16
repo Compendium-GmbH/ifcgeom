@@ -55,16 +55,15 @@ inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {
   return res;
 }
 
-inline void find_placement(IFC2X3::IfcProduct const* elem) {
-  auto const local_plcmt = reinterpret_cast<IFC2X3::IfcLocalPlacement const*>(
-      elem->ObjectPlacement_.value());
-  auto const a2p3d = std::get<IFC2X3::IfcAxis2Placement3D*>(
-      local_plcmt->RelativePlacement_.data_);
+// inline void find_placement(IFC2X3::IfcProduct const* elem) {
+//  auto const local_plcmt = reinterpret_cast<IFC2X3::IfcLocalPlacement
+//  const*>(
+//      elem->ObjectPlacement_.value());
+//  auto const a2p3d = std::get<IFC2X3::IfcAxis2Placement3D*>(
+//      local_plcmt->RelativePlacement_.data_);
 
-  auto const location_p3 = to_point_3(a2p3d->Location_);
-
-  auto const ht = h_transform(local_plcmt);
-  auto p = ht.transform(location_p3);
-}
+// auto const location_p3 = to_point_3(a2p3d->Location_);
+// auto const ht = h_transform(local_plcmt);
+//}
 
 }  // namespace ifcgeom

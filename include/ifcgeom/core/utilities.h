@@ -62,8 +62,8 @@ inline void print(Direction_3 const& dir) {
 }
 inline void print(Xform_3 const& xform3) {
   std::cout << "------------------" << std::endl;
-  for (unsigned i = 0; i < 4; ++i) {
-    for (unsigned j = 0; j < 4; ++j) {
+  for (int i = 0; i < 4; ++i) {
+    for (int j = 0; j < 4; ++j) {
       std::cout << xform3.m(i, j) << " ";
     }
     std::cout << std::endl;
@@ -129,11 +129,6 @@ inline std::vector<Point_3> translate(std::vector<Point_3> const& pts,
     point += d;
   }
   return points;
-}
-
-inline Point_3 rotate(Point_3 const& pt, IFC2X3::IfcAxis1Placement const* a1p,
-                      double const& angle) {
-  return Point_3{};
 }
 
 }  // namespace ifcgeom

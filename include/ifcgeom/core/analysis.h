@@ -14,28 +14,30 @@ std::vector<T> unique_values(std::vector<T>& input_vec) {
 
   std::sort(uniques.begin(), it);
   it = std::unique_copy(uniques.begin(), it, uniques.begin());
-  uniques.resize(std::distance(uniques.begin(), it));
+  uniques.resize(static_cast<unsigned>(std::distance(uniques.begin(), it)));
 
   return uniques;
 }
 
 template <typename T>
-std::vector<int> count_unique_values(std::vector<T>& input_vec) {
+std::vector<unsigned> count_unique_values(std::vector<T>& input_vec) {
   std::vector<T> uniques = unique_values<T>(input_vec);
-  std::vector<int> counts(uniques.size());
+  std::vector<unsigned> counts(uniques.size());
 
-  for (size_t i = 0; i < counts.size(); ++i)
-    counts[i] = std::count(input_vec.begin(), input_vec.end(), uniques[i]);
+  for (unsigned i = 0; i < counts.size(); ++i) {
+    auto count = std::count(input_vec.begin(), input_vec.end(), uniques[i]);
+    counts[i] = static_cast<unsigned>(count);
+  }
 
   return counts;
 }
 
 template <typename T>
 void print_distribution(std::vector<T>& input_vec) {
-  auto scan_result = ifcgeom::unique_values<std::string>(input_vec);
-  auto counts = ifcgeom::count_unique_values<std::string>(input_vec);
+  auto scan_result = ifcgeom::unique_values(input_vec);
+  auto counts = ifcgeom::count_unique_values(input_vec);
 
-  for (int i = 0; i < scan_result.size(); ++i) {
+  for (unsigned i = 0; i < scan_result.size(); ++i) {
     std::cout << scan_result.at(i) << " x" << counts.at(i) << std::endl;
   }
 }

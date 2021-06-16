@@ -40,8 +40,8 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
   }
 
   auto shapes = repr_by_guid(ctx.element_part_map_, p->GlobalId_);
-  for (auto const repr : shapes) {
-    for (auto const repr : repr->Representations_) {
+  for (auto const shape : shapes) {
+    for (auto const repr : shape->Representations_) {
       gather_vertices(repr->Items_);
     }
   }

@@ -1,5 +1,8 @@
 #include "doctest/doctest.h"
 
+#include <string>
+#include <vector>
+
 #include "IFC2X3/IfcProduct.h"
 
 #include "ifcgeom/core/analysis.h"

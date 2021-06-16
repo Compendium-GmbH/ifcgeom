@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <CGAL/Direction_2.h>
 #include <CGAL/Direction_3.h>
 #include <CGAL/Point_2.h>
@@ -61,7 +63,7 @@ struct context {
   element_part_map element_part_map_;
 };
 
-std::vector<std::string> const render_err_log{};
+static std::vector<std::string> render_err_log{};
 unsigned const render_resolution = 36;
 double const tolerance = 0.001;
 
