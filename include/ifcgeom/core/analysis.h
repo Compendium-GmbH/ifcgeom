@@ -3,16 +3,16 @@
 #include <string>
 #include <vector>
 
-#include "context.h"
-#include "io.h"
-
-#include "ifcgeom/tools/filters.h"
-#include "ifcgeom/tools/queries.h"
-
 #include "IFC2X3/IfcRepresentation.h"
 #include "IFC2X3/IfcRepresentationItem.h"
 
 #include "cista/containers/hash_map.h"
+
+#include "ifcgeom/core/context.h"
+#include "ifcgeom/core/io.h"
+
+#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/tools/queries.h"
 
 namespace ifcgeom {
 
