@@ -1,18 +1,18 @@
-if(CMake_SOURCE_DIR STREQUAL CMake_BINARY_DIR)
+if (CMake_SOURCE_DIR STREQUAL CMake_BINARY_DIR)
   message(FATAL_ERROR "CMake_RUN_CLANG_TIDY requires an out-of-source build!")
-endif()
+endif ()
 
 file(RELATIVE_PATH RELATIVE_SOURCE_DIR ${CMAKE_BINARY_DIR} ${CMAKE_SOURCE_DIR})
 
-if(GUIDFIX_CLANG_TIDY_COMMAND)
+if (GUIDFIX_CLANG_TIDY_COMMAND)
   set(CLANG_TIDY_COMMAND "${GUIDFIX_CLANG_TIDY_COMMAND}")
-else()
-  find_program(CLANG_TIDY_COMMAND NAMES clang-tidy clang-tidy-10)
-endif()
+else ()
+  find_program(CLANG_TIDY_COMMAND NAMES clang-tidy clang-tidy-12)
+endif ()
 
-if(NOT CLANG_TIDY_COMMAND)
+if (NOT CLANG_TIDY_COMMAND)
   message(FATAL_ERROR "CMake_RUN_CLANG_TIDY is ON but clang-tidy is not found!")
-endif()
+endif ()
 
 set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_COMMAND}")
 
