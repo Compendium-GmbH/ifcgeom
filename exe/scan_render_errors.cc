@@ -36,15 +36,7 @@ int main(int argc, char** argv) {
   }
 
   std::cout << std::endl;
-
-  auto scan_result =
-      ifcgeom::unique_values<std::string>(ifcgeom::render_err_log_);
-  auto counts =
-      ifcgeom::count_unique_values<std::string>(ifcgeom::render_err_log_);
-
-  for (int i = 0; i < scan_result.size(); ++i) {
-    std::cout << scan_result.at(i) << " x" << counts.at(i) << std::endl;
-  }
+  ifcgeom::print_distribution(ifcgeom::render_err_log_);
 
   std::cout << std::endl;
   auto const end = std::chrono::high_resolution_clock::now();

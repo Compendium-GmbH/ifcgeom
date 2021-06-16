@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 namespace ifcgeom {
@@ -27,6 +28,16 @@ std::vector<int> count_unique_values(std::vector<T>& input_vec) {
     counts[i] = std::count(input_vec.begin(), input_vec.end(), uniques[i]);
 
   return counts;
+}
+
+template <typename T>
+void print_distribution(std::vector<T>& input_vec) {
+  auto scan_result = ifcgeom::unique_values<std::string>(input_vec);
+  auto counts = ifcgeom::count_unique_values<std::string>(input_vec);
+
+  for (int i = 0; i < scan_result.size(); ++i) {
+    std::cout << scan_result.at(i) << " x" << counts.at(i) << std::endl;
+  }
 }
 
 }  // namespace ifcgeom

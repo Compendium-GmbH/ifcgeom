@@ -18,5 +18,5 @@ TEST_CASE("Render Test") {
     auto const geo = ifcgeom::gather_product_vertices(ctx, p);
   }
 
-  ifcgeom::print(ifcgeom::render_err_log_);
+  ifcgeom::print_distribution(ifcgeom::render_err_log_);
 }
