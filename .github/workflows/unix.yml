@@ -41,7 +41,7 @@ jobs:
       - uses: seanmiddleditch/gha-setup-ninja@master
       - name: Clang
         run: |
-          apt-get install clang++-10;
+          sudo apt-get install clang++-10;
 
       # ==== BUILD ====
       - name: CMake
