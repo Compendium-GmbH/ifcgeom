@@ -3,9 +3,12 @@ project(ifcgeom)
 
 include(cmake/pkg.cmake)
 
-if (NOT TARGET ifc2x3)
-    express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
+option(IFCGEOM_LINT "Run clang-tidy with the compiler." OFF)
+if (IFCGEOM_LINT)
+    include(cmake/clang-tidy.cmake)
 endif ()
+
+express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
 
 # LIB
 add_library(ifcgeom INTERFACE)
