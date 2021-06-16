@@ -39,10 +39,9 @@ jobs:
       # ==== SETUP ====
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Install Tools
+      - name: Clang
         run: |
-          apt-get install \
-            clang++-10
+          apt-get install clang++-10;
 
       # ==== BUILD ====
       - name: CMake
