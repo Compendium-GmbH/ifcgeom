@@ -29,21 +29,17 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - name: Clang Tidy
+          - name: Clang 10 Release
             cxx: clang++-10
             cc: clang-10
-            mode: Debug
+            mode: Release
             cxxflags: -stdlib=libc++
             ldflags: -lc++abi
-            lint: true
-            os: ubuntu-latest
+            os: Linux
     steps:
       # ==== SETUP ====
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
-      - name: Clang
-        run: |
-          sudo apt-get install clang++-10;
 
       # ==== BUILD ====
       - name: CMake
@@ -51,7 +47,6 @@ jobs:
           cmake \
             -G Ninja -S . -B build \
             -DBUILD_SHARED_LIBS=OFF \
-            -DCGAL_NO_GMP=1 \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
             -DCMAKE_CXX_FLAGS=${{ matrix.config.cxxflags }} \
