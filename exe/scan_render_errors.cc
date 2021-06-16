@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
   }
 
   std::cout << std::endl;
-  ifcgeom::print_distribution(ifcgeom::render_err_log_);
+  ifcgeom::print_distribution(ifcgeom::render_err_log);
 
   std::cout << std::endl;
   auto const end = std::chrono::high_resolution_clock::now();

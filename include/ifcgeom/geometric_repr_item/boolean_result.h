@@ -14,13 +14,13 @@ namespace ifcgeom {
 
 std::vector<Point_3> boolean_result(IFC2X3::IfcBooleanResult const* res) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{res->name()});
+  render_err_log.emplace_back(std::string{res->name()});
   return vertices;
 }
 std::vector<Point_3> boolean_clipping_result(
     IFC2X3::IfcBooleanClippingResult const* res) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{res->name()});
+  render_err_log.emplace_back(std::string{res->name()});
   return vertices;
 }
 

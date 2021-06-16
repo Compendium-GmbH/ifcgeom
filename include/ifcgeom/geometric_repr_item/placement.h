@@ -16,19 +16,19 @@ namespace ifcgeom {
 
 std::vector<Point_3> axis_1_placement(IFC2X3::IfcAxis1Placement const* a1p) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{a1p->name()});
+  render_err_log.emplace_back(std::string{a1p->name()});
   return vertices;
 }
 std::vector<Point_3> axis_2_placement_2d(
     IFC2X3::IfcAxis2Placement2D const* a2p) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{a2p->name()});
+  render_err_log.emplace_back(std::string{a2p->name()});
   return vertices;
 }
 std::vector<Point_3> axis_2_placement_3d(
     IFC2X3::IfcAxis2Placement3D const* a2p) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{a2p->name()});
+  render_err_log.emplace_back(std::string{a2p->name()});
   return vertices;
 }
 

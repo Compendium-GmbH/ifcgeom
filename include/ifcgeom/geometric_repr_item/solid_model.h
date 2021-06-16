@@ -51,7 +51,7 @@ std::vector<Point_3> faceted_brep(IFC2X3::IfcFacetedBrep const* brep) {
 std::vector<Point_3> faceted_brep_with_voids(
     IFC2X3::IfcFacetedBrepWithVoids const* brep) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{brep->name()});
+  render_err_log.emplace_back(std::string{brep->name()});
   return vertices;
 }
 
@@ -77,13 +77,13 @@ std::vector<Point_3> revolved_area(
     IFC2X3::IfcRevolvedAreaSolid const* revolved) {
   std::vector<Point_3> vertices;
   auto swept_area = profile_def_handler(revolved->SweptArea_);
-  render_err_log_.emplace_back(std::string{revolved->name()});
+  render_err_log.emplace_back(std::string{revolved->name()});
   return vertices;
 }
 
 std::vector<Point_3> surface_curve(
     IFC2X3::IfcSurfaceCurveSweptAreaSolid const* crv) {
-  render_err_log_.emplace_back(std::string{crv->name()});
+  render_err_log.emplace_back(std::string{crv->name()});
   return std::vector<Point_3>{};
 }
 
@@ -92,7 +92,7 @@ std::vector<Point_3> surface_curve(
 #pragma region IfcCsgSolid
 
 std::vector<Point_3> csg_solid(IFC2X3::IfcCsgSolid const* csg) {
-  render_err_log_.emplace_back(std::string{csg->name()});
+  render_err_log.emplace_back(std::string{csg->name()});
   return std::vector<Point_3>{};
 }
 
@@ -101,7 +101,7 @@ std::vector<Point_3> csg_solid(IFC2X3::IfcCsgSolid const* csg) {
 #pragma region IfcSweptDiskSolid
 
 std::vector<Point_3> swept_disk(IFC2X3::IfcSweptDiskSolid const* swept) {
-  render_err_log_.emplace_back(std::string{swept->name()});
+  render_err_log.emplace_back(std::string{swept->name()});
   return std::vector<Point_3>{};
 }
 

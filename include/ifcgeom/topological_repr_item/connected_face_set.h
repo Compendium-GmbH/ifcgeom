@@ -16,17 +16,17 @@ namespace ifcgeom {
 std::vector<Point_3> connected_face_set(
     IFC2X3::IfcConnectedFaceSet const* set) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{set->name()});
+  render_err_log.emplace_back(std::string{set->name()});
   return vertices;
 }
 std::vector<Point_3> closed_shell(IFC2X3::IfcClosedShell const* shell) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{shell->name()});
+  render_err_log.emplace_back(std::string{shell->name()});
   return vertices;
 }
 std::vector<Point_3> open_shell(IFC2X3::IfcOpenShell const* shell) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{shell->name()});
+  render_err_log.emplace_back(std::string{shell->name()});
   return vertices;
 }
 

@@ -62,8 +62,8 @@ inline void print(Direction_3 const& dir) {
 }
 inline void print(Xform_3 const& xform3) {
   std::cout << "------------------" << std::endl;
-  for (int i = 0; i < 4; ++i) {
-    for (int j = 0; j < 4; ++j) {
+  for (unsigned i = 0; i < 4; ++i) {
+    for (unsigned j = 0; j < 4; ++j) {
       std::cout << xform3.m(i, j) << " ";
     }
     std::cout << std::endl;
@@ -76,7 +76,7 @@ inline void print(std::vector<Point_3> const& geometry) {
   }
 }
 inline void print(std::vector<std::vector<Point_3>> const& geo) {
-  for (int i = 0; i < geo.size(); ++i) {
+  for (size_t i = 0; i < geo.size(); ++i) {
     std::cout << "Geometry [" << i + 1 << "/" << geo.size() << "]" << std::endl;
     print(geo.at(i));
     std::cout << std::endl;
@@ -90,29 +90,26 @@ inline void print(IFC2X3::IfcCartesianPoint const* cp) {
 
 inline void normalize(Vector_3& vec) {
   auto s_length = vec.squared_length();
-  if (s_length == 1) {
-    return;
-  }
   vec /= std::sqrt(s_length);
 }
 
 inline std::vector<Point_3> points_from_polyline(
     IFC2X3::IfcPolyline const* polyline) {
   std::vector<Point_3> points;
-  for (int i = 0; i < polyline->Points_.size() - 1; ++i) {
-    points.push_back(to_point_3(polyline->Points_.at(i)));
+  for (size_t i = 0; i < polyline->Points_.size() - 1; ++i) {
+    points.emplace_back(to_point_3(polyline->Points_.at(i)));
   }
   return points;
 }
 inline std::vector<Point_3> points_from_circle(
     IFC2X3::IfcCartesianPoint const* cp, double const& radius) {
   auto const pos = cp->Coordinates_;
-  auto const step = M_PI * 2 / render_resolution_;
+  auto const step = M_PI * 2 / render_resolution;
   std::vector<Point_3> pts;
-  for (int i = 0; i < render_resolution_; ++i) {
+  for (unsigned i = 0; i < render_resolution; ++i) {
     auto x = radius * std::cos(step * i) + pos.at(0);
     auto y = radius * std::sin(step * i) + pos.at(1);
-    pts.push_back(Point_3{x, y, pos.size() == 3 ? pos.at(2) : 0});
+    pts.emplace_back(Point_3{x, y, pos.size() == 3 ? pos.at(2) : 0});
   }
   return pts;
 }
@@ -120,24 +117,22 @@ inline std::vector<Point_3> points_from_circle(
 inline std::vector<Point_3> translate(IFC2X3::IfcPolyline const* polyline,
                                       Vector_3 d) {
   auto points = points_from_polyline(polyline);
-  for (int i = 0; i < points.size(); ++i) {
-    points.at(i) += d;
+  for (auto& point : points) {
+    point += d;
   }
   return points;
 }
 inline std::vector<Point_3> translate(std::vector<Point_3> const& pts,
                                       Vector_3 d) {
   auto points = std::vector<Point_3>{pts};
-  for (int i = 0; i < points.size(); ++i) {
-    points.at(i) += d;
+  for (auto& point : points) {
+    point += d;
   }
   return points;
 }
 
 inline Point_3 rotate(Point_3 const& pt, IFC2X3::IfcAxis1Placement const* a1p,
                       double const& angle) {
-  // TODO(FARNAZ): Implementation
-  Xform_3 xform{};
   return Point_3{};
 }
 

@@ -14,12 +14,12 @@ namespace ifcgeom {
 
 std::vector<Point_3> vertex(IFC2X3::IfcVertex const* vertex) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{vertex->name()});
+  render_err_log.emplace_back(std::string{vertex->name()});
   return vertices;
 }
 std::vector<Point_3> vertex_point(IFC2X3::IfcVertexPoint const* vertex) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{vertex->name()});
+  render_err_log.emplace_back(std::string{vertex->name()});
   return vertices;
 }
 

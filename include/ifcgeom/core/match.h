@@ -15,8 +15,7 @@ auto match(Parent&& p, Fn&& f) {
     return f(casted);
   } else {
     auto root = reinterpret_cast<step::root_entity*>(p);
-    auto arg = typeid(utl::first_argument<Fn>(p)).name();
-    render_err_log_.push_back(std::string{root->name()});
+    render_err_log.emplace_back(std::string{root->name()});
     return std::vector<Point_3>{};
   }
 }

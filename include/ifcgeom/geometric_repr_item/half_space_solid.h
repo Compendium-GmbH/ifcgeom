@@ -13,18 +13,18 @@ namespace ifcgeom {
 
 std::vector<Point_3> half_space_solid(IFC2X3::IfcHalfSpaceSolid const* solid) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{solid->name()});
+  render_err_log.emplace_back(std::string{solid->name()});
   return vertices;
 }
 std::vector<Point_3> boxed_half_space(IFC2X3::IfcBoxedHalfSpace const* solid) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{solid->name()});
+  render_err_log.emplace_back(std::string{solid->name()});
   return vertices;
 }
 std::vector<Point_3> poly_bounded_half_space(
     IFC2X3::IfcPolygonalBoundedHalfSpace const* solid) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{solid->name()});
+  render_err_log.emplace_back(std::string{solid->name()});
   return vertices;
 }
 

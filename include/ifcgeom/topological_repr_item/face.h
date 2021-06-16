@@ -14,12 +14,12 @@ namespace ifcgeom {
 
 std::vector<Point_3> face(IFC2X3::IfcFace const* face) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{face->name()});
+  render_err_log.emplace_back(std::string{face->name()});
   return vertices;
 }
 std::vector<Point_3> face_surface(IFC2X3::IfcFaceSurface const* face) {
   std::vector<Point_3> vertices;
-  render_err_log_.emplace_back(std::string{face->name()});
+  render_err_log.emplace_back(std::string{face->name()});
   return vertices;
 }
 
