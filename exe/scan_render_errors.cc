@@ -39,8 +39,6 @@ int main(int argc, char** argv) {
 
   std::cout << std::endl;
   auto const end = std::chrono::high_resolution_clock::now();
-  auto const time_span =
-      std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
   std::chrono::duration<double, std::milli> ms_double = end - start;
   std::cout << "Mapped Geometries in " << ms_double.count() / 1000
             << " Seconds !" << std::endl;
