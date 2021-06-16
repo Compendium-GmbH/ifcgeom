@@ -145,4 +145,6 @@ jobs:
 
       # ==== TESTS ====
       - name: Run Tests
-        run: ./build/ifcgeom-test
+        run: |
+        cd build \
+        .ifcgeom-test

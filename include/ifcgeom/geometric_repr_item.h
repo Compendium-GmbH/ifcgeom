@@ -74,15 +74,12 @@ std::vector<Point_3> shell_based_srf_model(
 
 std::vector<Point_3> geometric_repr_item_handler(
     IFC2X3::IfcGeometricRepresentationItem* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices, match(item, composite_crv_segment, curve_handler,
-                              direction, placement_handler, point_handler,
-                              surface_handler, vector, boolean_result_handler,
-                              solid_model_handler, half_space_solid_handler,
-                              bounding_box, crt_xform_operator_handler,
-                              sectioned_spine, geometric_set_handler,
-                              face_based_srf_model, shell_based_srf_model));
-  return vertices;
+  return match(
+      item, composite_crv_segment, curve_handler, direction, placement_handler,
+      point_handler, surface_handler, vector, boolean_result_handler,
+      solid_model_handler, half_space_solid_handler, bounding_box,
+      crt_xform_operator_handler, sectioned_spine, geometric_set_handler,
+      face_based_srf_model, shell_based_srf_model);
 }
 
 }  // namespace ifcgeom
