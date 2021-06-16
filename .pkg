@@ -25,4 +25,4 @@
 [cgal]
   url=git@github.com:baumhaus-project/cgal.git
   branch=master
-  commit=d3009857e373490394f32b97c59533ec4d109bc0
+  commit=ef36b39f240b95d60dbe8cfe7736101118d0f1e5
