@@ -35,7 +35,7 @@ jobs:
             mode: Release
             cxxflags: -stdlib=libc++
             ldflags: -lc++abi
-            os: Linux
+            os: ubuntu-latest
     steps:
       # ==== SETUP ====
       - uses: actions/checkout@v2
