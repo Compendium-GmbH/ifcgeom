@@ -45,23 +45,23 @@ jobs:
             os: macos-latest
             artifact: macos
             avx: On
-          - name: GCC 11 Release
-            cxx: g++-11
-            cc: gcc-11
+          - name: GCC 10 Release
+            cxx: g++-10
+            cc: gcc-10
             mode: Release
             os: ubuntu-20.04
             artifact: linux
             avx: On
-          - name: GCC 11 Release
-            cxx: g++-11
-            cc: gcc-11
+          - name: GCC 10 Release
+            cxx: g++-10
+            cc: gcc-10
             mode: Release
             os: ubuntu-20.04
             artifact: linux-noavx
             avx: Off
-          - name: GCC 11 Debug
-            cxx: g++-11
-            cc: gcc-11
+          - name: GCC 10 Debug
+            cxx: g++-10
+            cc: gcc-10
             mode: Debug
             os: ubuntu-20.04
             avx: On
@@ -113,8 +113,9 @@ jobs:
           sudo ./llvm.sh 12
           rm llvm.sh
           sudo apt-get install -y --no-install-recommends libc++-12-dev libc++abi-12-dev clang-tidy-12
+
       - name: Install Valgrind
-        if: matrix.config.mode == 'Debug' && matrix.config.cc == 'gcc-11'
+        if: matrix.config.mode == 'Debug' && matrix.config.cc == 'gcc-10'
         run: sudo apt-get install -y --no-install-recommends valgrind
 
       - name: Install Ninja
@@ -137,7 +138,7 @@ jobs:
             -DMOTIS_LINT=${{ matrix.config.lint }} \
             -DMOTIS_AVX=${{ matrix.config.avx }} \
             -DCTX_ASAN=${{ contains(matrix.config.cxxflags, '-fsanitize=address') }} \
-            -DCTX_VALGRIND=${{ matrix.config.cc == 'gcc-11' && matrix.config.mode == 'Debug' }} \
+            -DCTX_VALGRIND=${{ matrix.config.cc == 'gcc-10' && matrix.config.mode == 'Debug' }} \
 
       - name: Build
         run: |
