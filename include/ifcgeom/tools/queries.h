@@ -21,7 +21,6 @@
 
 #include "ifcgeom/tools/filters.h"
 
-
 namespace ifcgeom {
 
 using building_elements = std::vector<IFC2X3::IfcBuildingElementPart*>;
@@ -31,7 +30,7 @@ inline std::vector<IFC2X3::IfcPropertySet*> psets_by_product(
     step::model& model, IFC2X3::IfcProduct const& product) {
   std::vector<IFC2X3::IfcPropertySet*> p_sets;
   for (auto const& reldef :
-      filter_entities<IFC2X3::IfcRelDefinesByProperties>(model)) {
+       filter_entities<IFC2X3::IfcRelDefinesByProperties>(model)) {
     auto const p_set = dynamic_cast<IFC2X3::IfcPropertySet*>(
         reldef->RelatingPropertyDefinition_);
     if (p_set == nullptr) {
@@ -50,7 +49,7 @@ inline std::vector<IFC2X3::IfcPropertySet*> psets_by_product(
 inline std::optional<IFC2X3::IfcTypeObject*> type_by_product(
     step::model& model, IFC2X3::IfcProduct const& product) {
   for (auto const& reltype :
-      filter_entities<IFC2X3::IfcRelDefinesByType>(model)) {
+       filter_entities<IFC2X3::IfcRelDefinesByType>(model)) {
     auto const type =
         dynamic_cast<IFC2X3::IfcTypeObject*>(reltype->RelatingType_);
     if (type == nullptr) {

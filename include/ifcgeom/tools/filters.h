@@ -40,4 +40,4 @@ auto filter_entities(step::model const& m) {
          utl::iterable();
 }
 
-}  // namespace ifctools
+}  // namespace ifcgeom

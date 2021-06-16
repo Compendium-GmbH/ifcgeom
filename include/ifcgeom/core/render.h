@@ -27,13 +27,14 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
     return vec;
   }
 
-  auto gather_vertices = [&](std::vector<IFC2X3::IfcRepresentationItem*> const& items) {
-    for (auto const item : items) {
-      utl::concat(
-        vec, match(item, topological_repr_item_handler,
-                   geometric_repr_item_handler, mapped_item, styled_item));
-    }
-  };
+  auto gather_vertices =
+      [&](std::vector<IFC2X3::IfcRepresentationItem*> const& items) {
+        for (auto const item : items) {
+          utl::concat(vec, match(item, topological_repr_item_handler,
+                                 geometric_repr_item_handler, mapped_item,
+                                 styled_item));
+        }
+      };
 
   for (auto const repr : p->Representation_.value()->Representations_) {
     gather_vertices(repr->Items_);
@@ -47,13 +48,12 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
   }
   return vec;
 }
-std::vector<Point_3> gather_product_vertices(context& ctx,
-                                             char const* c) {
+std::vector<Point_3> gather_product_vertices(context& ctx, char const* c) {
   auto p = get_entity_by_guid<IFC2X3::IfcProduct>(ctx.model_, c);
-  if(p.has_value()){
+  if (p.has_value()) {
     return gather_product_vertices(ctx, p.value());
   }
-  return std::vector<Point_3 >{};
+  return std::vector<Point_3>{};
 }
 
 }  // namespace ifcgeom

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <string>
 #include <vector>
 
@@ -8,8 +9,8 @@
 #include "ifcgeom/tools/filters.h"
 #include "ifcgeom/tools/queries.h"
 
-#include "IFC2X3/IfcRepresentationItem.h"
 #include "IFC2X3/IfcRepresentation.h"
+#include "IFC2X3/IfcRepresentationItem.h"
 
 #include "cista/containers/hash_map.h"
 

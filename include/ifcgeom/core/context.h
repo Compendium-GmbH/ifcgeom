@@ -11,14 +11,14 @@
 #include "CGAL/Exact_predicates_inexact_constructions_kernel.h"
 #include "CGAL/Polyhedron_3.h"
 
-#include "IFC2X3/parser.h"
 #include "IFC2X3/IfcBuildingElementPart.h"
 #include "IFC2X3/IfcRelAggregates.h"
+#include "IFC2X3/parser.h"
 
 #include "step/write.h"
 
-#include "cista/mmap.h"
 #include "cista/containers/hash_map.h"
+#include "cista/mmap.h"
 
 #include "ifcgeom/tools/filters.h"
 #include "ifcgeom/tools/queries.h"
