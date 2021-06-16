@@ -13,7 +13,7 @@ express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
 # LIB
 add_library(ifcgeom INTERFACE)
 target_include_directories(ifcgeom INTERFACE include ifc2x3)
-target_link_libraries(ifcgeom INTERFACE boost boost-filesystem utl cista ifc2x3 CGAL gmp mpfr)
+target_link_libraries(ifcgeom INTERFACE boost boost-filesystem utl cista ifc2x3 CGAL)
 target_compile_features(ifcgeom INTERFACE cxx_std_17)
 
 # EXE
