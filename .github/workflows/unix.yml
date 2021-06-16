@@ -93,10 +93,6 @@ jobs:
             avx: On
     env:
       DEBIAN_FRONTEND: noninteractive
-      BUILDCACHE_COMPRESS: true
-      BUILDCACHE_ACCURACY: SLOPPY
-      BUILDCACHE_LUA_PATH: ${{ github.workspace }}/tools
-      BUILDCACHE_DIR: ${{ github.workspace }}/.buildcache
       UBSAN_OPTIONS: halt_on_error=1:abort_on_error=1
     steps:
       - uses: actions/checkout@v2
@@ -125,23 +121,6 @@ jobs:
         if: matrix.config.os != 'macos-latest'
         run: sudo apt-get install -y --no-install-recommends ninja-build
 
-      # ==== CACHING ====
-      - name: buildcache Cache
-        uses: actions/cache@v1.1.2
-        with:
-          path: ${{ github.workspace }}/.buildcache
-          key: buildcache-${{ matrix.config.os }}-${{ matrix.config.cc }}-${{ matrix.config.mode }}-${{ contains(matrix.config.cxxflags, 'sanitize') }}-${{ matrix.config.lint }}-${{ hashFiles('.pkg') }}-${{ hashFiles('**/*.h') }}-${{ hashFiles('**/*.cc') }}
-          restore-keys: |
-            buildcache-${{ matrix.config.os }}-${{ matrix.config.cc }}-${{ matrix.config.mode }}-${{ contains(matrix.config.cxxflags, 'sanitize') }}-${{ matrix.config.lint }}-${{ hashFiles('.pkg') }}-${{ hashFiles('**/*.h') }}-
-            buildcache-${{ matrix.config.os }}-${{ matrix.config.cc }}-${{ matrix.config.mode }}-${{ contains(matrix.config.cxxflags, 'sanitize') }}-${{ matrix.config.lint }}-${{ hashFiles('.pkg') }}-
-            buildcache-${{ matrix.config.os }}-${{ matrix.config.cc }}-${{ matrix.config.mode }}-${{ contains(matrix.config.cxxflags, 'sanitize') }}-${{ matrix.config.lint }}-
-      - name: Dependencies Cache
-        uses: actions/cache@v1.1.2
-        with:
-          path: ${{ github.workspace }}/deps
-          key: deps-${{ hashFiles('.pkg') }}
-          restore-keys: deps-
-
       # ==== BUILD ====
       - name: CMake
         run: |
@@ -162,9 +141,7 @@ jobs:
 
       - name: Build
         run: |
-          ./build/buildcache/bin/buildcache -z
           cmake --build build --target ifcgeom-test
-          ./build/buildcache/bin/buildcache -s
 
       # ==== TESTS ====
       - name: Run Tests
