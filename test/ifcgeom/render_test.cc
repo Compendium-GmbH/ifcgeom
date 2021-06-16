@@ -9,7 +9,7 @@
 #include "ifcgeom/tools/filters.h"
 
 TEST_CASE("Render Test") {
-  auto path = "resources/brep/HZG-OH-ZP-U1-4200M-004-H5-b_DD04.ifc";
+  auto path = "../resources/brep/HZG-OH-ZP-U1-4200M-004-H5-b_DD04.ifc";
   auto ctx = ifcgeom::context{path};
   REQUIRE(!ctx.model_.entity_mem_.empty());
 

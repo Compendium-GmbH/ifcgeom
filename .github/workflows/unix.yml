@@ -22,3 +22,38 @@ jobs:
         run: |
           git status --porcelain
           git status --porcelain | xargs -I {} -0 test -z \"{}\"
+
+  build:
+    runs-on: ${{matrix.config.os}}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - name: Clang Tidy
+            cxx: clang++-10
+            cc: clang-10
+            mode: Debug
+            lint: true
+            os: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      # ==== BUILD ====
+      - name: CMake
+        run: |
+          cmake \
+            -G Ninja -S . -B build \
+            -DBUILD_SHARED_LIBS=OFF \
+            -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.mode }} \
+            -DARGUS_LINT=${{ matrix.config.lint }}
+
+      - name: Build
+        run: |
+          cd build
+          ninja ifcgeom-test
+
+      # ==== TESTS ====
+      - name: Run Tests
+        run: ./build/ifcgeom-test
