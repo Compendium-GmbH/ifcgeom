@@ -37,16 +37,6 @@ typedef CGAL::Vector_2<K> Vector_2;
 typedef CGAL::Direction_3<K> Direction_3;
 typedef CGAL::Direction_2<K> Direction_2;
 
-struct repr_type;
-using type_map = cista::raw::hash_map<std::string, repr_type*>;
-
-struct repr_type {
-  unsigned count{1};
-  std::string func;
-
-  type_map children;
-};
-
 struct context {
   context() = default;
   context(std::string const& path) { load(path); }
@@ -71,7 +61,7 @@ struct context {
   element_part_map element_part_map_;
 };
 
-type_map render_err_log_;
+std::vector<std::string> render_err_log_;
 unsigned render_resolution_ = 36;
 double tolerance_ = 0.001;
 
