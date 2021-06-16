@@ -13,7 +13,6 @@
 #include "ifcgeom/styled_item.h"
 #include "ifcgeom/topological_repr_item.h"
 
-#include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/match.h"
 
 #include "ifcgeom/tools/queries.h"

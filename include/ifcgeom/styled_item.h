@@ -13,7 +13,7 @@ namespace ifcgeom {
 
 std::vector<Point_3> styled_item(IFC2X3::IfcStyledItem const* item) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{item->name()}, __func__);
+  render_err_log_.emplace_back(std::string{item->name()});
   return vertices;
 }
 

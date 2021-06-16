@@ -15,25 +15,22 @@ namespace ifcgeom {
 
 std::vector<Point_3> cartesian_point(IFC2X3::IfcCartesianPoint const* pt) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{pt->name()}, __func__);
+  render_err_log_.emplace_back(std::string{pt->name()});
   return vertices;
 }
 std::vector<Point_3> point_on_crv(IFC2X3::IfcPointOnCurve const* pt) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{pt->name()}, __func__);
+  render_err_log_.emplace_back(std::string{pt->name()});
   return vertices;
 }
 std::vector<Point_3> point_on_srf(IFC2X3::IfcPointOnSurface const* pt) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{pt->name()}, __func__);
+  render_err_log_.emplace_back(std::string{pt->name()});
   return vertices;
 }
 
 std::vector<Point_3> point_handler(IFC2X3::IfcPoint* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices,
-              match(item, cartesian_point, point_on_crv, point_on_srf));
-  return vertices;
+  return match(item, cartesian_point, point_on_crv, point_on_srf);
 }
 
 }  // namespace ifcgeom

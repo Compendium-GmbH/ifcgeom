@@ -21,7 +21,7 @@ namespace ifcgeom {
 
 std::vector<Point_3> path(IFC2X3::IfcPath const* path) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{path->name()}, __func__);
+  render_err_log_.emplace_back(std::string{path->name()});
   return vertices;
 }
 

@@ -30,45 +30,45 @@ namespace ifcgeom {
 std::vector<Point_3> composite_crv_segment(
     IFC2X3::IfcCompositeCurveSegment const* crv) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{crv->name()}, __func__);
+  render_err_log_.emplace_back(std::string{crv->name()});
   return vertices;
 }
 // OBSOLETE...
 std::vector<Point_3> direction(IFC2X3::IfcDirection const* dir) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{dir->name()}, __func__);
+  render_err_log_.emplace_back(std::string{dir->name()});
   return vertices;
 }
 // OBSOLETE...
 std::vector<Point_3> vector(IFC2X3::IfcVector const* v) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{v->name()}, __func__);
+  render_err_log_.emplace_back(std::string{v->name()});
   return vertices;
 }
 
 std::vector<Point_3> bounding_box(IFC2X3::IfcBoundingBox const* bbox) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{bbox->name()}, __func__);
+  render_err_log_.emplace_back(std::string{bbox->name()});
   return vertices;
 }
 
 std::vector<Point_3> sectioned_spine(IFC2X3::IfcSectionedSpine const* spine) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{spine->name()}, __func__);
+  render_err_log_.emplace_back(std::string{spine->name()});
   return vertices;
 }
 
 std::vector<Point_3> face_based_srf_model(
     IFC2X3::IfcFaceBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{srf->name()}, __func__);
+  render_err_log_.emplace_back(std::string{srf->name()});
   return vertices;
 }
 
 std::vector<Point_3> shell_based_srf_model(
     IFC2X3::IfcShellBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{srf->name()}, __func__);
+  render_err_log_.emplace_back(std::string{srf->name()});
   return vertices;
 }
 

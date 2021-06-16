@@ -16,26 +16,23 @@ namespace ifcgeom {
 std::vector<Point_3> connected_face_set(
     IFC2X3::IfcConnectedFaceSet const* set) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{set->name()}, __func__);
+  render_err_log_.emplace_back(std::string{set->name()});
   return vertices;
 }
 std::vector<Point_3> closed_shell(IFC2X3::IfcClosedShell const* shell) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{shell->name()}, __func__);
+  render_err_log_.emplace_back(std::string{shell->name()});
   return vertices;
 }
 std::vector<Point_3> open_shell(IFC2X3::IfcOpenShell const* shell) {
   std::vector<Point_3> vertices;
-  add_to_map(render_err_log_, std::string{shell->name()}, __func__);
+  render_err_log_.emplace_back(std::string{shell->name()});
   return vertices;
 }
 
 std::vector<Point_3> connected_face_set_handler(
     IFC2X3::IfcConnectedFaceSet* item) {
-  std::vector<Point_3> vertices{};
-  utl::concat(vertices,
-              match(item, closed_shell, open_shell, connected_face_set));
-  return vertices;
+  return match(item, closed_shell, open_shell, connected_face_set);
 }
 
 }  // namespace ifcgeom
