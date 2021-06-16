@@ -36,8 +36,13 @@ jobs:
             lint: true
             os: ubuntu-latest
     steps:
+      # ==== SETUP ====
       - uses: actions/checkout@v2
       - uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Install Tools
+        run: |
+          apt-get install
+            clang++-10
 
       # ==== BUILD ====
       - name: CMake
