@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+#include <variant>
 #include <vector>
 
 #include "utl/concat.h"
@@ -10,6 +12,7 @@
 #include "IFC2X3/IfcDirection.h"
 #include "IFC2X3/IfcFaceBasedSurfaceModel.h"
 #include "IFC2X3/IfcSectionedSpine.h"
+#include "IFC2X3/IfcShell.h"
 #include "IFC2X3/IfcShellBasedSurfaceModel.h"
 #include "IFC2X3/IfcVector.h"
 
@@ -35,13 +38,13 @@ std::vector<Point_3> composite_crv_segment(
   render_err_log.emplace_back(std::string{crv->name()});
   return vertices;
 }
-// OBSOLETE...
+
 std::vector<Point_3> direction(IFC2X3::IfcDirection const* dir) {
   std::vector<Point_3> vertices;
   render_err_log.emplace_back(std::string{dir->name()});
   return vertices;
 }
-// OBSOLETE...
+
 std::vector<Point_3> vector(IFC2X3::IfcVector const* v) {
   std::vector<Point_3> vertices;
   render_err_log.emplace_back(std::string{v->name()});
@@ -72,7 +75,15 @@ std::vector<Point_3> face_based_srf_model(
 std::vector<Point_3> shell_based_srf_model(
     IFC2X3::IfcShellBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{srf->name()});
+  for (auto shell : srf->SbsmBoundary_) {
+    if (std::holds_alternative<IFC2X3::IfcOpenShell*>(shell.data_)) {
+      utl::concat(vertices,
+                  open_shell(std::get<IFC2X3::IfcOpenShell*>(shell.data_)));
+    } else {
+      utl::concat(vertices,
+                  closed_shell(std::get<IFC2X3::IfcClosedShell*>(shell.data_)));
+    }
+  }
   return vertices;
 }
 
