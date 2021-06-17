@@ -4,7 +4,37 @@
 #include <iostream>
 #include <vector>
 
+#include "IFC2X3/IfcProduct.h"
+
+#include "ifcgeom/tools/filters.h"
+
+#include "ifcgeom/core/context.h"
+
 namespace ifcgeom {
+
+inline void iterate_repr(IFC2X3::IfcProductRepresentation const* prod) {
+  for (auto const repr : prod->Representations_) {
+    render_err_log.emplace_back(repr->name());
+    for (auto const item : repr->Items_) {
+      render_err_log.emplace_back(item->name());
+    }
+  }
+}
+
+void list_geometry_types(std::string const& path) {
+  auto ctx = ifcgeom::context{path};
+  auto products = ifcgeom::filter_entities<IFC2X3::IfcProduct>(ctx.model_);
+  for (auto const p : products) {
+    if (!p->Representation_.has_value()) {
+      continue;
+    }
+    iterate_repr(p->Representation_.value());
+    auto shapes = ifcgeom::repr_by_guid(ctx.element_part_map_, p->GlobalId_);
+    for (auto const repr : shapes) {
+      iterate_repr(repr);
+    }
+  }
+}
 
 template <typename T>
 std::vector<T> unique_values(std::vector<T>& input_vec) {
