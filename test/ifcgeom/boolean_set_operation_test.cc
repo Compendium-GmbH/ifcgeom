@@ -12,7 +12,7 @@
 
 using Nef_polyhedron = CGAL::Nef_polyhedron_3<ifcgeom::K>;
 
-auto const check_boolean = [](Nef_polyhedron const& p, unsigned i) {
+auto const check_boolean = [](Nef_polyhedron& p, unsigned i) {
   REQUIRE(!p.is_empty());
   ifcgeom::Polyhedron_3 polyhedron;
   p.convert_to_Polyhedron(polyhedron);
