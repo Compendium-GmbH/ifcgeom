@@ -134,7 +134,7 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build build --target ifcgeom-test
+          cmake --build build --target ifcgeom-test compare-convex-hull list-geometry-types scan-render-errors
 
       # ==== TESTS ====
       - name: Run Tests
