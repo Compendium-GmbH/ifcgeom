@@ -16,7 +16,8 @@ int main(int argc, char** argv) {
 
   if (argv[2] == std::string("SINGLE")) {
     for (unsigned i = 0; i < paths.size(); ++i) {
-      std::ifstream in{paths.at(i), std::ifstream::ate | std::ifstream::binary};
+      std::ifstream in{paths.at(i).string(),
+                       std::ifstream::ate | std::ifstream::binary};
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
                 << "] : " << paths.at(i).c_str() << " ("
                 << static_cast<double>(in.tellg()) / 1000000.00 << " MB)"

@@ -94,9 +94,9 @@ jobs:
         if: matrix.config.os == 'macos-latest'
 
       # ==== INSTALL ====
-      - name: Update APT
-        if: matrix.config.os != 'macos-latest'
-        run: sudo apt-get update
+      #      - name: Update APT
+      #        if: matrix.config.os != 'macos-latest'
+      #        run: sudo apt-get update
 
       - name: Install LLVM
         if: matrix.config.os != 'macos-latest' && matrix.config.cc == 'clang-12'
