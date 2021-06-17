@@ -1,2 +1,2 @@
 # ifcgeom
-Library for geometry processing of ifc data structures
+Library for processing geometries in IFC models
