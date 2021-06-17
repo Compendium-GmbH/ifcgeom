@@ -23,6 +23,7 @@
 #include "IFC2X3/IfcOffsetCurve3D.h"
 
 #include "ifcgeom/core/match.h"
+#include "ifcgeom/core/utilities.h"
 
 namespace ifcgeom {
 
@@ -40,7 +41,9 @@ std::vector<Point_3> composite_crv_2d(IFC2X3::Ifc2DCompositeCurve const* crv) {
 }
 std::vector<Point_3> polyline(IFC2X3::IfcPolyline const* crv) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{crv->name()});
+  for (auto const pt : crv->Points_) {
+    vertices.emplace_back(to_point_3(pt));
+  }
   return vertices;
 }
 std::vector<Point_3> trimmed_crv(IFC2X3::IfcTrimmedCurve const* crv) {
