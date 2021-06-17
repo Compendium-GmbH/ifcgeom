@@ -12,6 +12,14 @@
 
 using Nef_polyhedron = CGAL::Nef_polyhedron_3<ifcgeom::K>;
 
+auto const check_boolean = [](Nef_polyhedron const& p, unsigned i) {
+  REQUIRE(!p.is_empty());
+  ifcgeom::Polyhedron_3 polyhedron;
+  p.convert_to_Polyhedron(polyhedron);
+  auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
+  CHECK(static_cast<unsigned>(vol) == i);
+};
+
 TEST_CASE("Boolean Test") {
   std::vector<ifcgeom::Point_3> vec{
       ifcgeom::Point_3{0, 0, 0}, ifcgeom::Point_3{3, 0, 0},
@@ -35,31 +43,14 @@ TEST_CASE("Boolean Test") {
 
   SUBCASE("UNION") {
     Nef_polyhedron boolean_union{nef_polyhedron + nef_poly_2};
-    REQUIRE(!boolean_union.is_empty());
-
-    ifcgeom::Polyhedron_3 union_polyhedron;
-    boolean_union.convert_to_Polyhedron(union_polyhedron);
-    auto union_vol = CGAL::Polygon_mesh_processing::volume(union_polyhedron);
-    CHECK(static_cast<unsigned>(union_vol) == 46);
+    check_boolean(boolean_union, 46);
   }
   SUBCASE("DIFFERENCE") {
     Nef_polyhedron boolean_difference{nef_polyhedron - nef_poly_2};
-    REQUIRE(!boolean_difference.is_empty());
-
-    ifcgeom::Polyhedron_3 difference_polyhedron;
-    boolean_difference.convert_to_Polyhedron(difference_polyhedron);
-    auto difference_vol =
-        CGAL::Polygon_mesh_processing::volume(difference_polyhedron);
-    CHECK(static_cast<unsigned>(difference_vol) == 19);
+    check_boolean(boolean_difference, 19);
   }
   SUBCASE("INTERSECTION") {
     Nef_polyhedron boolean_intersection{nef_polyhedron * nef_poly_2};
-    REQUIRE(!boolean_intersection.is_empty());
-
-    ifcgeom::Polyhedron_3 intersection_polyhedron;
-    boolean_intersection.convert_to_Polyhedron(intersection_polyhedron);
-    auto intersection_vol =
-        CGAL::Polygon_mesh_processing::volume(intersection_polyhedron);
-    CHECK(static_cast<unsigned>(intersection_vol) == 8);
+    check_boolean(boolean_intersection, 8);
   }
 }
