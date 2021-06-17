@@ -1,5 +1,3 @@
-#include <vector>
-
 #include "CGAL/Polygon_mesh_processing/measure.h"
 #include "CGAL/convex_hull_3.h"
 
@@ -56,10 +54,4 @@ int main(int argc, char** argv) {
   std::cout << "Volume Model 1: " << v1 << std::endl;
   std::cout << "Volume Model 2: " << v2 << std::endl;
   std::cout << "Variance: " << 100 - (v1 / v2) * 100 << " %" << std::endl;
-
-  // std::cout << std::endl;
-  // std::cout << "Render Error Log Model 1: " << std::endl;
-  // ifcgeom::print(context_1.render_err_log_);
-  // std::cout << "Render Error Log Model 1: " << std::endl;
-  // ifcgeom::print(context_2.render_err_log_);
 }

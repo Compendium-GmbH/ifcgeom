@@ -1,9 +1,4 @@
-#include <vector>
-
 #include "IFC2X3/IfcProduct.h"
-
-#include "CGAL/Polygon_mesh_processing/measure.h"
-#include "CGAL/convex_hull_3.h"
 
 #include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/context.h"
@@ -22,7 +17,7 @@ int main(int argc, char** argv) {
   auto const paths = ifcgeom::get_ifc_paths(argv[1]);
 
   if (!paths.empty()) {
-    for (int i = 0; i < paths.size(); ++i) {
+    for (unsigned i = 0; i < paths.size(); ++i) {
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
                 << "] : " << paths.at(i).c_str() << std::endl;
       ifcgeom::context ctx{paths.at(i).string()};
