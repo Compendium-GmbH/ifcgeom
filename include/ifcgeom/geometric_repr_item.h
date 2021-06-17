@@ -32,13 +32,6 @@
 
 namespace ifcgeom {
 
-std::vector<Point_3> composite_crv_segment(
-    IFC2X3::IfcCompositeCurveSegment const* crv) {
-  std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{crv->name()});
-  return vertices;
-}
-
 std::vector<Point_3> direction(IFC2X3::IfcDirection const* dir) {
   std::vector<Point_3> vertices;
   render_err_log.emplace_back(std::string{dir->name()});
@@ -52,8 +45,12 @@ std::vector<Point_3> vector(IFC2X3::IfcVector const* v) {
 }
 
 std::vector<Point_3> bounding_box(IFC2X3::IfcBoundingBox const* bbox) {
-  std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{bbox->name()});
+  auto const c = to_point_3(bbox->Corner_);
+  std::vector<Point_3> vertices{c, c + Vector_3{bbox->XDim_, 0, 0},
+                                c + Vector_3{bbox->XDim_, bbox->YDim_, 0},
+                                c + Vector_3{0, bbox->YDim_, 0}};
+  utl::concat(vertices, translate(vertices, Vector_3{0, 0, bbox->ZDim_}));
+  // TODO(STEFFEN): Translate by Product Placement
   return vertices;
 }
 
