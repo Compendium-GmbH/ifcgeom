@@ -20,11 +20,13 @@ int main(int argc, char** argv) {
   auto const paths = ifcgeom::get_ifc_paths(argv[1]);
 
   if (argv[2] == std::string("SINGLE")) {
-    for (int i = 0; i < paths.size(); ++i) {
-      std::ifstream in{paths.at(i), std::ifstream::ate | std::ifstream::binary};
+    for (unsigned i = 0; i < paths.size(); ++i) {
+      std::ifstream in{paths.at(i).string(),
+                       std::ifstream::ate | std::ifstream::binary};
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
-                << "] : " << paths.at(i).c_str() << " ("
-                << in.tellg() / 1000000.00 << " MB)" << std::endl;
+                << "] : " << paths.at(i).string() << " ("
+                << static_cast<double>(in.tellg()) / 1000000.00 << " MB)"
+                << std::endl;
       ifcgeom::list_geometry_types(paths.at(i).string());
 
       std::cout << std::endl;
@@ -32,7 +34,7 @@ int main(int argc, char** argv) {
       ifcgeom::render_err_log = {};
     }
   } else if (argv[2] == std::string("UNION")) {
-    for (int i = 0; i < paths.size(); ++i) {
+    for (unsigned i = 0; i < paths.size(); ++i) {
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
                 << "] : " << paths.at(i).c_str() << std::endl;
       ifcgeom::list_geometry_types(paths.at(i).string());
