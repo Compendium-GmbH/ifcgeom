@@ -1,8 +1,6 @@
 #include <chrono>
-#include <ctime>
 #include <fstream>
 #include <iostream>
-#include <vector>
 
 #include "IFC2X3/IfcProductRepresentation.h"
 #include "IFC2X3/IfcRepresentation.h"
@@ -28,6 +26,7 @@ int main(int argc, char** argv) {
                 << "] : " << paths.at(i).c_str() << " ("
                 << in.tellg() / 1000000.00 << " MB)" << std::endl;
       ifcgeom::list_geometry_types(paths.at(i).string());
+
       std::cout << std::endl;
       ifcgeom::print_distribution(ifcgeom::render_err_log);
       ifcgeom::render_err_log = {};
@@ -47,8 +46,6 @@ int main(int argc, char** argv) {
 
   std::cout << std::endl;
   auto const end = std::chrono::high_resolution_clock::now();
-  auto const time_span =
-      std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
   std::chrono::duration<double, std::milli> ms_double = end - start;
   std::cout << "Mapped Geometries in " << ms_double.count() / 1000
             << " Seconds !" << std::endl;
