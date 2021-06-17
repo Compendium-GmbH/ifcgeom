@@ -1,4 +1,5 @@
 #include "IFC2X3/IfcProduct.h"
+#include "IFC2X3/IfcRepresentation.h"
 
 #include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/context.h"

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <type_traits>
+#include <variant>
 #include <vector>
 
 #include "utl/concat.h"
@@ -10,6 +12,7 @@
 #include "IFC2X3/IfcDirection.h"
 #include "IFC2X3/IfcFaceBasedSurfaceModel.h"
 #include "IFC2X3/IfcSectionedSpine.h"
+#include "IFC2X3/IfcShell.h"
 #include "IFC2X3/IfcShellBasedSurfaceModel.h"
 #include "IFC2X3/IfcVector.h"
 
@@ -23,23 +26,18 @@
 #include "ifcgeom/geometric_repr_item/solid_model.h"
 #include "ifcgeom/geometric_repr_item/surface.h"
 
+#include "ifcgeom/topological_repr_item/connected_face_set.h"
+
 #include "ifcgeom/core/match.h"
 
 namespace ifcgeom {
 
-std::vector<Point_3> composite_crv_segment(
-    IFC2X3::IfcCompositeCurveSegment const* crv) {
-  std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{crv->name()});
-  return vertices;
-}
-// OBSOLETE...
 std::vector<Point_3> direction(IFC2X3::IfcDirection const* dir) {
   std::vector<Point_3> vertices;
   render_err_log.emplace_back(std::string{dir->name()});
   return vertices;
 }
-// OBSOLETE...
+
 std::vector<Point_3> vector(IFC2X3::IfcVector const* v) {
   std::vector<Point_3> vertices;
   render_err_log.emplace_back(std::string{v->name()});
@@ -47,8 +45,12 @@ std::vector<Point_3> vector(IFC2X3::IfcVector const* v) {
 }
 
 std::vector<Point_3> bounding_box(IFC2X3::IfcBoundingBox const* bbox) {
-  std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{bbox->name()});
+  auto const c = to_point_3(bbox->Corner_);
+  std::vector<Point_3> vertices{c, c + Vector_3{bbox->XDim_, 0, 0},
+                                c + Vector_3{bbox->XDim_, bbox->YDim_, 0},
+                                c + Vector_3{0, bbox->YDim_, 0}};
+  utl::concat(vertices, translate(vertices, Vector_3{0, 0, bbox->ZDim_}));
+  // TODO(STEFFEN): Translate by Product Placement
   return vertices;
 }
 
@@ -61,14 +63,22 @@ std::vector<Point_3> sectioned_spine(IFC2X3::IfcSectionedSpine const* spine) {
 std::vector<Point_3> face_based_srf_model(
     IFC2X3::IfcFaceBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{srf->name()});
+  for (auto const face_set : srf->FbsmFaces_) {
+    utl::concat(vertices, connected_face_set_handler(face_set));
+  }
   return vertices;
 }
 
 std::vector<Point_3> shell_based_srf_model(
     IFC2X3::IfcShellBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{srf->name()});
+  for (auto shell : srf->SbsmBoundary_) {
+    std::visit(
+        [&](auto item) {
+          utl::concat(vertices, match(item, open_shell, closed_shell));
+        },
+        shell.data_);
+  }
   return vertices;
 }
 

@@ -23,6 +23,9 @@
 #include "IFC2X3/IfcOffsetCurve3D.h"
 
 #include "ifcgeom/core/match.h"
+#include "ifcgeom/core/utilities.h"
+
+#include "ifcgeom/geometric_repr_item/composite_crv_segment.h"
 
 namespace ifcgeom {
 
@@ -30,7 +33,9 @@ namespace ifcgeom {
 
 std::vector<Point_3> composite_crv(IFC2X3::IfcCompositeCurve const* crv) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{crv->name()});
+  for (auto const segment : crv->Segments_) {
+    utl::concat(vertices, composite_crv_segment(segment));
+  }
   return vertices;
 }
 std::vector<Point_3> composite_crv_2d(IFC2X3::Ifc2DCompositeCurve const* crv) {
@@ -40,7 +45,9 @@ std::vector<Point_3> composite_crv_2d(IFC2X3::Ifc2DCompositeCurve const* crv) {
 }
 std::vector<Point_3> polyline(IFC2X3::IfcPolyline const* crv) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{crv->name()});
+  for (auto const pt : crv->Points_) {
+    vertices.emplace_back(to_point_3(pt));
+  }
   return vertices;
 }
 std::vector<Point_3> trimmed_crv(IFC2X3::IfcTrimmedCurve const* crv) {
@@ -66,6 +73,7 @@ std::vector<Point_3> rational_bezier_crv(
 
 std::vector<Point_3> circle(IFC2X3::IfcCircle const* crv) {
   std::vector<Point_3> vertices;
+
   render_err_log.emplace_back(std::string{crv->name()});
   return vertices;
 }

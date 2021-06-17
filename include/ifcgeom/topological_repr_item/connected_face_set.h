@@ -11,22 +11,30 @@
 
 #include "ifcgeom/core/match.h"
 
+#include "ifcgeom/topological_repr_item/face.h"
+
 namespace ifcgeom {
 
 std::vector<Point_3> connected_face_set(
     IFC2X3::IfcConnectedFaceSet const* set) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{set->name()});
+  for (auto const face : set->CfsFaces_) {
+    utl::concat(vertices, face_handler(face));
+  }
   return vertices;
 }
 std::vector<Point_3> closed_shell(IFC2X3::IfcClosedShell const* shell) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{shell->name()});
+  for (auto const face : shell->CfsFaces_) {
+    utl::concat(vertices, face_handler(face));
+  }
   return vertices;
 }
 std::vector<Point_3> open_shell(IFC2X3::IfcOpenShell const* shell) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{shell->name()});
+  for (auto const face : shell->CfsFaces_) {
+    utl::concat(vertices, face_handler(face));
+  }
   return vertices;
 }
 

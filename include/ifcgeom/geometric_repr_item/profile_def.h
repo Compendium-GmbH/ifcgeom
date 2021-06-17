@@ -146,15 +146,12 @@ std::vector<Point_3> center_line_profile_def(
 
 std::vector<Point_3> arbitrary_profile_def(
     IFC2X3::IfcArbitraryClosedProfileDef const* profile) {
-  auto const polyline =
-      reinterpret_cast<IFC2X3::IfcPolyline const*>(profile->OuterCurve_);
-  return points_from_polyline(polyline);
+  return curve_handler(profile->OuterCurve_);
 }
 std::vector<Point_3> arbitrary_profile_def_with_voids(
     IFC2X3::IfcArbitraryProfileDefWithVoids const* profile) {
-  std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{profile->name()});
-  return vertices;
+  // TODO(ANYONE): IMPLEMENT VOIDS !
+  return curve_handler(profile->OuterCurve_);
 }
 
 #pragma endregion
