@@ -76,13 +76,11 @@ std::vector<Point_3> shell_based_srf_model(
     IFC2X3::IfcShellBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
   for (auto shell : srf->SbsmBoundary_) {
-    if (std::holds_alternative<IFC2X3::IfcOpenShell*>(shell.data_)) {
-      utl::concat(vertices,
-                  open_shell(std::get<IFC2X3::IfcOpenShell*>(shell.data_)));
-    } else {
-      utl::concat(vertices,
-                  closed_shell(std::get<IFC2X3::IfcClosedShell*>(shell.data_)));
-    }
+    std::visit(
+        [&](auto item) {
+          utl::concat(vertices, match(item, open_shell, closed_shell));
+        },
+        shell.data_);
   }
   return vertices;
 }
