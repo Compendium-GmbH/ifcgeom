@@ -23,6 +23,8 @@
 #include "ifcgeom/geometric_repr_item/solid_model.h"
 #include "ifcgeom/geometric_repr_item/surface.h"
 
+#include "ifcgeom/topological_repr_item/connected_face_set.h"
+
 #include "ifcgeom/core/match.h"
 
 namespace ifcgeom {
@@ -61,7 +63,9 @@ std::vector<Point_3> sectioned_spine(IFC2X3::IfcSectionedSpine const* spine) {
 std::vector<Point_3> face_based_srf_model(
     IFC2X3::IfcFaceBasedSurfaceModel const* srf) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{srf->name()});
+  for (auto const face_set : srf->FbsmFaces_) {
+    utl::concat(vertices, connected_face_set_handler(face_set));
+  }
   return vertices;
 }
 

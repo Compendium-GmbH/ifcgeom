@@ -10,11 +10,15 @@
 
 #include "ifcgeom/core/match.h"
 
+#include "ifcgeom/topological_repr_item/face_bound.h"
+
 namespace ifcgeom {
 
 std::vector<Point_3> face(IFC2X3::IfcFace const* face) {
   std::vector<Point_3> vertices;
-  render_err_log.emplace_back(std::string{face->name()});
+  for (auto const bound : face->Bounds_) {
+    utl::concat(vertices, face_bound_handler(bound));
+  }
   return vertices;
 }
 std::vector<Point_3> face_surface(IFC2X3::IfcFaceSurface const* face) {
