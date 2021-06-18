@@ -33,6 +33,8 @@
 
 #include "ifcgeom/core/match.h"
 
+#include "ifcgeom/geometric_repr_item/curve.h"
+
 namespace ifcgeom {
 
 #pragma region IfcParameterizedProfileDef

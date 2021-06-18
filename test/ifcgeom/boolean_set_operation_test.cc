@@ -26,9 +26,9 @@ TEST_CASE("Boolean Test") {
       ifcgeom::Point_3{0, 0, 3}, ifcgeom::Point_3{3, 0, 3},
       ifcgeom::Point_3{3, 3, 3}, ifcgeom::Point_3{0, 3, 3}};
 
-  //  ifcgeom::Polyhedron_3 polyhedron;
-  //  CGAL::convex_hull_3(vec.begin(), vec.end(), polyhedron);
-  //  REQUIRE(polyhedron.size_of_vertices() > 0);
+  ifcgeom::Polyhedron_3 polyhedron;
+  CGAL::convex_hull_3(vec.begin(), vec.end(), polyhedron);
+  REQUIRE(polyhedron.size_of_vertices() > 0);
   //
   //  Nef_polyhedron nef_polyhedron{polyhedron};
   //  CHECK(!nef_polyhedron.is_empty());
