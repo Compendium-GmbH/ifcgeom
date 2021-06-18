@@ -29,9 +29,9 @@ TEST_CASE("Boolean Test") {
   ifcgeom::Polyhedron_3 polyhedron;
   CGAL::convex_hull_3(vec.begin(), vec.end(), polyhedron);
   REQUIRE(polyhedron.size_of_vertices() > 0);
-  //
-  //  Nef_polyhedron nef_polyhedron{polyhedron};
-  //  CHECK(!nef_polyhedron.is_empty());
+
+  Nef_polyhedron nef_polyhedron{polyhedron};
+  CHECK(!nef_polyhedron.is_empty());
   //
   //  ifcgeom::Xform_3 xform{CGAL::TRANSLATION, ifcgeom::Vector_3{1, 1, 1}};
   //  auto nef_poly_2 = Nef_polyhedron{nef_polyhedron};
