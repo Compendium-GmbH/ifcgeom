@@ -1,6 +1,5 @@
 #include "doctest/doctest.h"
 
-#include <iterator>
 #include <vector>
 
 #include <CGAL/Exact_integer.h>
@@ -12,12 +11,12 @@
 
 using Nef_polyhedron = CGAL::Nef_polyhedron_3<ifcgeom::K>;
 
-void check_boolean(Nef_polyhedron const& p, unsigned i) {
-  REQUIRE(!p.is_empty());
-  ifcgeom::Polyhedron_3 polyhedron;
-  p.convert_to_Polyhedron(polyhedron);
-  auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
-  CHECK(static_cast<unsigned>(vol) == i);
+// void check_boolean(Nef_polyhedron const& p, unsigned i) {
+//   REQUIRE(!p.is_empty());
+//   ifcgeom::Polyhedron_3 polyhedron;
+//   p.convert_to_Polyhedron(polyhedron);
+//   auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
+//   CHECK(static_cast<unsigned>(vol) == i);
 }
 
 TEST_CASE("Boolean Test") {
@@ -41,16 +40,16 @@ TEST_CASE("Boolean Test") {
   auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
   CHECK(vol == static_cast<double>(27));
 
-  SUBCASE("UNION") {
-    Nef_polyhedron boolean_union{nef_polyhedron + nef_poly_2};
-    check_boolean(boolean_union, 46);
-  }
-  SUBCASE("DIFFERENCE") {
-    Nef_polyhedron boolean_difference{nef_polyhedron - nef_poly_2};
-    check_boolean(boolean_difference, 19);
-  }
-  SUBCASE("INTERSECTION") {
-    Nef_polyhedron boolean_intersection{nef_polyhedron * nef_poly_2};
-    check_boolean(boolean_intersection, 8);
-  }
+  //  SUBCASE("UNION") {
+  //    Nef_polyhedron boolean_union{nef_polyhedron + nef_poly_2};
+  //    check_boolean(boolean_union, 46);
+  //  }
+  //  SUBCASE("DIFFERENCE") {
+  //    Nef_polyhedron boolean_difference{nef_polyhedron - nef_poly_2};
+  //    check_boolean(boolean_difference, 19);
+  //  }
+  //  SUBCASE("INTERSECTION") {
+  //    Nef_polyhedron boolean_intersection{nef_polyhedron * nef_poly_2};
+  //    check_boolean(boolean_intersection, 8);
+  //  }
 }
