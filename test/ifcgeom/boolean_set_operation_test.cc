@@ -17,7 +17,7 @@ using Nef_polyhedron = CGAL::Nef_polyhedron_3<ifcgeom::K>;
 //   p.convert_to_Polyhedron(polyhedron);
 //   auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
 //   CHECK(static_cast<unsigned>(vol) == i);
-}
+//}
 
 TEST_CASE("Boolean Test") {
   std::vector<ifcgeom::Point_3> vec{
