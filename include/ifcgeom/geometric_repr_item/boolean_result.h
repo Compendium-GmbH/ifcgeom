@@ -32,15 +32,28 @@ std::vector<Point_3> boolean_result(IFC2X3::IfcBooleanResult const* res) {
   auto v_first = get_vertices(res->FirstOperand_.data_);
   auto v_second = get_vertices(res->SecondOperand_.data_);
 
-  ifcgeom::Polyhedron_3 polyhedron;
-  CGAL::convex_hull_3(v_first.begin(), v_first.end(), polyhedron);
+  Polyhedron_3 polyhedron_first;
+  CGAL::convex_hull_3(v_first.begin(), v_first.end(), polyhedron_first);
+  Polyhedron_3 polyhedron_second;
+  CGAL::convex_hull_3(v_second.begin(), v_second.end(), polyhedron_second);
 
+  Nef_polyhedron nef_polyhedron_first{polyhedron_first};
+  Nef_polyhedron nef_polyhedron_second{polyhedron_second};
+
+  Nef_polyhedron boolean_result;
   switch (res->Operator_) {
-    case IFC2X3::IfcBooleanOperator::IFC2X3_UNION: break;
-    case IFC2X3::IfcBooleanOperator::IFC2X3_DIFFERENCE: break;
-    case IFC2X3::IfcBooleanOperator::IFC2X3_INTERSECTION: break;
+    case IFC2X3::IfcBooleanOperator::IFC2X3_UNION:
+      boolean_result = nef_polyhedron_first + nef_polyhedron_second;
+      break;
+    case IFC2X3::IfcBooleanOperator::IFC2X3_DIFFERENCE:
+      boolean_result = nef_polyhedron_first - nef_polyhedron_second;
+      break;
+    case IFC2X3::IfcBooleanOperator::IFC2X3_INTERSECTION:
+      boolean_result = nef_polyhedron_first * nef_polyhedron_second;
+      break;
   }
-  return v_first;
+
+  return std::vector<Point_3>{};
 }
 std::vector<Point_3> boolean_clipping_result(
     IFC2X3::IfcBooleanClippingResult const* res) {
