@@ -6,7 +6,7 @@
 #include "ifcgeom/core/io.h"
 #include "ifcgeom/core/render.h"
 
-#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/core/filters.h"
 
 int main(int argc, char** argv) {
   if (argc != 2) {
