@@ -104,10 +104,10 @@ std::vector<Point_3> rectangle_profile_def(
   std::vector<Point_3> vertices;
   auto const ref = profile->Position_->RefDirection_;
   auto pos = to_point_3(profile->Position_->Location_);
-  auto vecX = ref.has_value() ? to_vector_3(ref.value()) : Vector_3{1, 0, 0};
-  auto vecY = CGAL::cross_product(Vector_3{0, 0, 1}, vecX);
-  normalize(vecX);
-  normalize(vecY);
+  auto vec_x = ref.has_value() ? to_vector_3(ref.value()) : Vector_3{1, 0, 0};
+  auto vec_y = CGAL::cross_product(Vector_3{0, 0, 1}, vec_x);
+  normalize(vec_x);
+  normalize(vec_y);
 
   auto t1 = Vector_3{profile->XDim_ / 2, profile->YDim_ / 2, 0};
   auto t2 = Vector_3{profile->XDim_ / 2, -profile->YDim_ / 2, 0};
