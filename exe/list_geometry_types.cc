@@ -31,7 +31,6 @@ int main(int argc, char** argv) {
 
       std::cout << std::endl;
       ifcgeom::print_distribution(ifcgeom::render_err_log);
-      ifcgeom::render_err_log = {};
     }
   } else if (argv[2] == std::string("UNION")) {
     for (unsigned i = 0; i < paths.size(); ++i) {
@@ -41,7 +40,6 @@ int main(int argc, char** argv) {
     }
     std::cout << std::endl;
     ifcgeom::print_distribution(ifcgeom::render_err_log);
-    ifcgeom::render_err_log = {};
   } else {
     std::cout << "Please Provide a Mapping Method (SINGLE / UNION)\n";
   }
