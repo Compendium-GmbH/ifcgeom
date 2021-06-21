@@ -15,7 +15,7 @@
 
 #include "ifcgeom/core/match.h"
 
-#include "ifcgeom/tools/queries.h"
+#include "ifcgeom/core/queries.h"
 
 namespace ifcgeom {
 

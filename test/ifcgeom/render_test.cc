@@ -9,7 +9,7 @@
 #include "ifcgeom/core/context.h"
 #include "ifcgeom/core/render.h"
 
-#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/core/filters.h"
 
 TEST_CASE("Render Test") {
   auto path = "../resources/brep/HZG-OH-ZP-U1-4200M-004-H5-b_DD04.ifc";
