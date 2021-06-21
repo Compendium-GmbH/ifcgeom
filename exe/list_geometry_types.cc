@@ -2,8 +2,13 @@
 #include <fstream>
 #include <iostream>
 
+#include "IFC2X3/IfcProductRepresentation.h"
+#include "IFC2X3/IfcRepresentation.h"
+
+#include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/context.h"
 #include "ifcgeom/core/io.h"
+#include "ifcgeom/core/match.h"
 
 int main(int argc, char** argv) {
   if (argc != 3) {
@@ -19,20 +24,22 @@ int main(int argc, char** argv) {
       std::ifstream in{paths.at(i).string(),
                        std::ifstream::ate | std::ifstream::binary};
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
-                << "] : " << paths.at(i).c_str() << " ("
+                << "] : " << paths.at(i).string() << " ("
                 << static_cast<double>(in.tellg()) / 1000000.00 << " MB)"
                 << std::endl;
+      ifcgeom::list_geometry_types(paths.at(i).string());
 
-      auto ctx = ifcgeom::context{paths.at(i).string()};
       std::cout << std::endl;
+      ifcgeom::print_distribution(ifcgeom::render_err_log);
     }
   } else if (argv[2] == std::string("UNION")) {
     for (unsigned i = 0; i < paths.size(); ++i) {
       std::cout << "Loading context [" << i + 1 << "/" << paths.size()
                 << "] : " << paths.at(i).c_str() << std::endl;
-      auto ctx = ifcgeom::context{paths.at(i).string()};
+      ifcgeom::list_geometry_types(paths.at(i).string());
     }
     std::cout << std::endl;
+    ifcgeom::print_distribution(ifcgeom::render_err_log);
   } else {
     std::cout << "Please Provide a Mapping Method (SINGLE / UNION)\n";
   }

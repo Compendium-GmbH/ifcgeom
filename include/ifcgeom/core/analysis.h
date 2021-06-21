@@ -4,7 +4,18 @@
 #include <iostream>
 #include <vector>
 
+#include "IFC2X3/IfcProduct.h"
+#include "IFC2X3/IfcProductRepresentation.h"
+#include "IFC2X3/IfcRepresentation.h"
+#include "IFC2X3/IfcRepresentationItem.h"
+
+#include "ifcgeom/core/context.h"
+#include "ifcgeom/core/filters.h"
+
 namespace ifcgeom {
+
+void iterate_repr(IFC2X3::IfcProductRepresentation const* prod);
+void list_geometry_types(std::string const& path);
 
 template <typename T>
 std::vector<T> unique_values(std::vector<T>& input_vec) {

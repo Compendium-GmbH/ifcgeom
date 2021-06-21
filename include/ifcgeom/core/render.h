@@ -7,6 +7,7 @@
 #include "utl/parser/cstr.h"
 
 #include "IFC2X3/IfcRepresentationItem.h"
+#include "IFC2X3/IfcRepresentation.h"
 
 #include "ifcgeom/geometric_repr_item.h"
 #include "ifcgeom/mapped_item.h"
@@ -15,11 +16,11 @@
 
 #include "ifcgeom/core/match.h"
 
-#include "ifcgeom/tools/queries.h"
+#include "ifcgeom/core/queries.h"
 
 namespace ifcgeom {
 
-std::vector<Point_3> gather_product_vertices(context& ctx,
+inline std::vector<Point_3> gather_product_vertices(context& ctx,
                                              IFC2X3::IfcProduct const* p) {
   auto vec = std::vector<Point_3>{};
   if (!p->Representation_.has_value()) {
@@ -47,7 +48,8 @@ std::vector<Point_3> gather_product_vertices(context& ctx,
   }
   return vec;
 }
-std::vector<Point_3> gather_product_vertices(context& ctx, char const* c) {
+
+inline std::vector<Point_3> gather_product_vertices(context& ctx, char const* c) {
   auto p = get_entity_by_guid<IFC2X3::IfcProduct>(ctx.model_, c);
   if (p.has_value()) {
     return gather_product_vertices(ctx, p.value());

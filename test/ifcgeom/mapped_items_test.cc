@@ -1,10 +1,13 @@
 #include "doctest/doctest.h"
 
+#include <iostream>
+
+#include "IFC2X3/IfcMappedItem.h"
 #include "IFC2X3/IfcProduct.h"
+#include "IFC2X3/IfcRepresentation.h"
 
 #include "ifcgeom/core/context.h"
-#include "ifcgeom/core/render.h"
-#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/core/filters.h"
 
 TEST_CASE("gather vertices, mapped items") {
   auto path = "../resources/BES-SAN-OH-GR-U2-4100B-000-H5-a_DD05.ifc";
