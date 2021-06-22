@@ -31,4 +31,6 @@ void context::write(std::string const& path) const {
   step::write(out_file, model_);
 }
 
+std::vector<std::string> render_err_log{};
+
 }  // namespace ifcgeom

@@ -17,11 +17,12 @@ void check_boolean(ifcgeom::Nef_Polyhedron_3 const& p, unsigned i) {
 }
 
 TEST_CASE("Boolean Test") {
+  auto constexpr x = 3;
   std::vector<ifcgeom::Point_3> vec{
-      ifcgeom::Point_3{0, 0, 0}, ifcgeom::Point_3{3, 0, 0},
-      ifcgeom::Point_3{3, 3, 0}, ifcgeom::Point_3{0, 3, 0},
-      ifcgeom::Point_3{0, 0, 3}, ifcgeom::Point_3{3, 0, 3},
-      ifcgeom::Point_3{3, 3, 3}, ifcgeom::Point_3{0, 3, 3}};
+      ifcgeom::Point_3{0, 0, 0}, ifcgeom::Point_3{x, 0, 0},
+      ifcgeom::Point_3{x, x, 0}, ifcgeom::Point_3{0, x, 0},
+      ifcgeom::Point_3{0, 0, x}, ifcgeom::Point_3{x, 0, x},
+      ifcgeom::Point_3{x, x, x}, ifcgeom::Point_3{0, x, x}};
 
   ifcgeom::Polyhedron_3 polyhedron;
   CGAL::convex_hull_3(vec.begin(), vec.end(), polyhedron);
@@ -50,4 +51,28 @@ TEST_CASE("Boolean Test") {
     ifcgeom::Nef_Polyhedron_3 boolean_intersection{nef_polyhedron * nef_poly_2};
     check_boolean(boolean_intersection, 8);
   }
+}
+
+TEST_CASE("Boolean Double Test") {
+  auto constexpr x = M_PI;
+  std::vector<ifcgeom::Point_3> vec{
+      ifcgeom::Point_3{0, 0, 0}, ifcgeom::Point_3{x, 0, 0},
+      ifcgeom::Point_3{x, x, 0}, ifcgeom::Point_3{0, x, 0},
+      ifcgeom::Point_3{0, 0, x}, ifcgeom::Point_3{x, 0, x},
+      ifcgeom::Point_3{x, x, x}, ifcgeom::Point_3{0, x, x}};
+
+  ifcgeom::Polyhedron_3 polyhedron;
+  CGAL::convex_hull_3(vec.begin(), vec.end(), polyhedron);
+  REQUIRE(polyhedron.size_of_vertices() > 0);
+
+  ifcgeom::Nef_Polyhedron_3 nef_polyhedron{polyhedron};
+  //  ifcgeom::Nef_polyhedron nef_polyhedron{vec.begin(), vec.end(), {}};
+  CHECK(!nef_polyhedron.is_empty());
+
+  ifcgeom::Xform_3 xform{CGAL::TRANSLATION, ifcgeom::Vector_3{1, 1, 1}};
+  auto nef_poly_2 = ifcgeom::Nef_Polyhedron_3{nef_polyhedron};
+  nef_poly_2.transform(xform);
+
+  auto vol = CGAL::Polygon_mesh_processing::volume(polyhedron);
+  CHECK(vol == 31.006276680299813);
 }
