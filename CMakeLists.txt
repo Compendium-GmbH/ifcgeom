@@ -12,32 +12,34 @@ express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(ifcgeom-compile-flags
-        -Wno-global-constructors
-        -Wno-exit-time-destructors
-        -fno-strict-aliasing
-        -Weverything
-        -Wno-c++98-compat
-        -Wno-c++98-compat-pedantic
-        -Wno-newline-eof
-        -Wno-missing-prototypes
-        -Wno-padded
-        -Wno-double-promotion
-        -Wno-undef
-        -Wno-undefined-reinterpret-cast
-        -Wno-float-conversion
-        -Wno-return-std-move-in-c++11
-        -Wno-gnu-zero-variadic-macro-arguments
-        -Wno-unknown-pragmas
-        -Wno-documentation-unknown-command
-        -Werror
-        )
-endif()
+            -Wno-global-constructors
+            -Wno-exit-time-destructors
+            -fno-strict-aliasing
+            -Weverything
+            -Wno-c++98-compat
+            -Wno-c++98-compat-pedantic
+            -Wno-newline-eof
+            -Wno-missing-prototypes
+            -Wno-padded
+            -Wno-double-promotion
+            -Wno-undef
+            -Wno-undefined-reinterpret-cast
+            -Wno-float-conversion
+            -Wno-return-std-move-in-c++11
+            -Wno-gnu-zero-variadic-macro-arguments
+            -Wno-unknown-pragmas
+            -Wno-documentation-unknown-command
+            -Werror
+            )
+endif ()
+
 
 # LIB
-add_library(ifcgeom INTERFACE)
-target_include_directories(ifcgeom INTERFACE include ifc2x3)
-target_link_libraries(ifcgeom INTERFACE boost boost-filesystem utl cista ifc2x3 CGAL)
-target_compile_features(ifcgeom INTERFACE cxx_std_17)
+file(GLOB_RECURSE ifcgeom-files src/*.cc)
+add_library(ifcgeom ${ifcgeom-files})
+target_include_directories(ifcgeom PUBLIC include)
+target_link_libraries(ifcgeom boost boost-filesystem utl cista ifc2x3 CGAL)
+target_compile_features(ifcgeom PUBLIC cxx_std_17)
 
 # EXE
 add_executable(compare-convex-hull exe/compare_convex_hulls.cc)

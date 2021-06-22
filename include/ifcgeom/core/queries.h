@@ -6,6 +6,7 @@
 
 #include "cista/containers/hash_map.h"
 
+#include "IFC2X3/IfcBuildingElementPart.h"
 #include "IFC2X3/IfcMaterial.h"
 #include "IFC2X3/IfcProduct.h"
 #include "IFC2X3/IfcProductRepresentation.h"
@@ -19,7 +20,7 @@
 #include "IFC2X3/IfcTypeObject.h"
 #include "IFC2X3/parser.h"
 
-#include "ifcgeom/tools/filters.h"
+#include "ifcgeom/core/filters.h"
 
 namespace ifcgeom {
 
