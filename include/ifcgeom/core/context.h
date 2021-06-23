@@ -26,6 +26,7 @@ struct context {
 extern std::vector<std::string> render_err_log;
 unsigned const render_resolution = 36;
 double const tolerance = 0.001;
+double const edge_length = 0.05;
 
 // std::vector<context> const contexts;
 

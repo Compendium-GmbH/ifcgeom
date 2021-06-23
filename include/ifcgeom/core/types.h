@@ -27,6 +27,6 @@ using Vector_3 = CGAL::Vector_3<K>;
 using Vector_2 = CGAL::Vector_2<K>;
 using Direction_3 = CGAL::Direction_3<K>;
 using Direction_2 = CGAL::Direction_2<K>;
-using Surface_mesh = CGAL::Surface_mesh<K>;
+using Mesh = CGAL::Surface_mesh<Point_3>;
 
 }  // namespace ifcgeom
