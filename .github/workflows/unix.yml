@@ -113,14 +113,24 @@ jobs:
 
       - name: Install Ninja
         if: matrix.config.os != 'macos-latest'
-        run:
-          sudo apt-get install -y --no-install-recommends ninja-build
+        run: sudo apt-get install -y --no-install-recommends ninja-build
 
-      - name: Install MPFR
+      - name: Install MPFR (Linux)
+        if: matrix.config.os != 'macos-latest'
         run: sudo apt-get install -y --no-install-recommends libmpfr-dev
 
-      - name: Install GMP
+      - name: Install MPFR (MacOS)
+        if: matrix.config.os == 'macos-latest'
+        run: brew install mpfr
+
+      - name: Install GMP (Linux)
+        if: matrix.config.os != 'macos-latest'
         run: sudo apt-get install -y --no-install-recommends libgmp-dev
+
+      - name: Install GMP (MacOS)
+        if: matrix.config.os == 'macos-latest'
+        run: brew install gmp
+
 
       # ==== BUILD ====
       - name: CMake
