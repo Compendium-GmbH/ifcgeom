@@ -3,7 +3,9 @@
 #include <vector>
 
 #include "IFC2X3/IfcBooleanClippingResult.h"
+#include "IFC2X3/IfcBooleanOperand.h"
 #include "IFC2X3/IfcBooleanResult.h"
+#include "IFC2X3/IfcCsgPrimitive3D.h"
 
 #include "ifcgeom/core/types.h"
 

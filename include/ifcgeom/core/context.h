@@ -23,9 +23,10 @@ struct context {
   element_part_map element_part_map_;
 };
 
-static std::vector<std::string> render_err_log;
+extern std::vector<std::string> render_err_log;
 unsigned const render_resolution = 36;
 double const tolerance = 0.001;
+double const edge_length = 0.05;
 
 // std::vector<context> const contexts;
 

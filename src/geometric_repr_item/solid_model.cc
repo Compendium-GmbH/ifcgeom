@@ -33,8 +33,7 @@ std::vector<Point_3> faceted_brep(IFC2X3::IfcFacetedBrep const* brep) {
   for (auto const face : brep->Outer_->CfsFaces_) {
     auto const bounds = face->Bounds_;
     for (auto const bound : bounds) {
-      utl::concat(vertices,
-                  match(bound->Bound_, poly_loop, vertex_loop, edge_loop));
+      utl::concat(vertices, loop_handler(bound->Bound_));
     }
   }
   return vertices;
