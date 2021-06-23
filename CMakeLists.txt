@@ -38,7 +38,7 @@ endif ()
 file(GLOB_RECURSE ifcgeom-files src/*.cc)
 add_library(ifcgeom ${ifcgeom-files})
 target_include_directories(ifcgeom PUBLIC include)
-target_link_libraries(ifcgeom boost boost-filesystem utl cista ifc2x3 CGAL)
+target_link_libraries(ifcgeom boost boost-filesystem utl cista ifc2x3 CGAL gmp mpfr)
 target_compile_features(ifcgeom PUBLIC cxx_std_17)
 
 # EXE
