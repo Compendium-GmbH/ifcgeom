@@ -27,11 +27,9 @@ inline Xform_3 matrix(IFC2X3::IfcAxis2Placement3D const* a2p) {
   auto axisY = CGAL::cross_product(axisZ, axisX);
   normalize(axisY);  // TODO(Steffen): Testing
   Point_3 location = to_point_3(a2p->Location_);
-  // clang-format off
   return Xform_3{axisX.x(), axisY.x(), axisZ.x(), location.x(),
                  axisX.y(), axisY.y(), axisZ.y(), location.y(),
                  axisX.z(), axisY.z(), axisZ.z(), location.z()};
-  // clang-format on
 }
 
 inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {

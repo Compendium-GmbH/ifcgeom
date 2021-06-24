@@ -2,6 +2,9 @@
 
 #include "IFC2X3/IfcAxis2Placement2D.h"
 #include "IFC2X3/IfcAxis2Placement3D.h"
+#include "IFC2X3/IfcCartesianTransformationOperator.h"
+#include "IFC2X3/IfcCartesianTransformationOperator2DnonUniform.h"
+#include "IFC2X3/IfcCartesianTransformationOperator3DnonUniform.h"
 #include "IFC2X3/IfcDirection.h"
 #include "IFC2X3/IfcLocalPlacement.h"
 
@@ -29,11 +32,9 @@ inline Xform_3 matrix(IFC2X3::IfcAxis2Placement3D const* a2p) {
   auto axisY = CGAL::cross_product(axisZ, axisX);
   normalize(axisY);  // TODO(Steffen): Testing
   Point_3 location = to_point_3(a2p->Location_);
-  // clang-format off
   return Xform_3{axisX.x(), axisY.x(), axisZ.x(), location.x(),
                  axisX.y(), axisY.y(), axisZ.y(), location.y(),
                  axisX.z(), axisY.z(), axisZ.z(), location.z()};
-  // clang-format on
 }
 
 inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {
@@ -55,15 +56,41 @@ inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {
   return res;
 }
 
-// inline void find_placement(IFC2X3::IfcProduct const* elem) {
-//  auto const local_plcmt = reinterpret_cast<IFC2X3::IfcLocalPlacement
-//  const*>(
-//      elem->ObjectPlacement_.value());
-//  auto const a2p3d = std::get<IFC2X3::IfcAxis2Placement3D*>(
-//      local_plcmt->RelativePlacement_.data_);
+inline Xform_3 cartesian_transformation(
+    IFC2X3::IfcCartesianTransformationOperator const* cto) {
+  auto axisX = cto->Axis1_.has_value() ? to_vector_3(cto->Axis1_.value())
+                                       : Vector_3{1, 0, 0};
+  auto axisY = cto->Axis2_.has_value() ? to_vector_3(cto->Axis2_.value())
+                                       : Vector_3{0, 1, 0};
+  auto axisZ = CGAL::cross_product(axisY, axisX);
 
-// auto const location_p3 = to_point_3(a2p3d->Location_);
-// auto const ht = h_transform(local_plcmt);
-//}
+  auto const scale = cto->Scale_.has_value() ? cto->Scale_.value() : 1.0;
+
+  ifcgeom::normalize(axisX, axisY, axisZ);
+
+  axisX = scale * axisX;
+  axisY = scale * axisY;
+  axisZ = scale * axisZ;
+
+  auto const xform =
+      Xform_3{axisX.x(), axisY.x(),
+              axisZ.x(), cto->LocalOrigin_->Coordinates_.at(0) * scale,
+              axisX.y(), axisY.y(),
+              axisZ.y(), cto->LocalOrigin_->Coordinates_.at(1) * scale,
+              axisX.z(), axisY.z(),
+              axisZ.z(), cto->LocalOrigin_->Coordinates_.at(2) * scale};
+
+  return xform;
+}
+
+inline Xform_3 cartesian_transformation_non_uniform(
+    IFC2X3::IfcCartesianTransformationOperator3DnonUniform const* cto) {
+  return Xform_3{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0};
+}
+
+inline Xform_3 cartesian_transformation_non_uniform(
+    IFC2X3::IfcCartesianTransformationOperator2DnonUniform const* cto) {
+  return Xform_3{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0};
+}
 
 }  // namespace ifcgeom

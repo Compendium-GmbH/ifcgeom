@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iomanip>
+#include <iostream>
 #include <vector>
 
 #include "IFC2X3/IfcAxis1Placement.h"
@@ -48,9 +50,9 @@ inline Point_2 to_point_2(IFC2X3::IfcCartesianPoint const* cp) {
   return Point_2{cp->Coordinates_.at(0), cp->Coordinates_.at(1)};
 }
 
-inline void print(Point_3 const& pt) {
-  std::cout << "Point_3 : X=" << pt.x() << " Y=" << pt.y() << " Z=" << pt.z()
-            << std::endl;
+inline void print(Point_3 const& pt, unsigned precision = 16U) {
+  std::cout << std::setprecision(precision) << "Point_3 : (" << pt.x() << ", "
+            << pt.y() << ", " << pt.z() << ")" << std::endl;
 }
 inline void print(Vector_3 const& vec) {
   std::cout << "Point_3 : X=" << vec.x() << " Y=" << vec.y() << " Z=" << vec.z()
@@ -91,6 +93,12 @@ inline void print(IFC2X3::IfcCartesianPoint const* cp) {
 inline void normalize(Vector_3& vec) {
   auto s_length = vec.squared_length();
   vec /= std::sqrt(s_length);
+}
+
+inline void normalize(Vector_3& v1, Vector_3& v2, Vector_3& v3) {
+  normalize(v1);
+  normalize(v2);
+  normalize(v3);
 }
 
 inline std::vector<Point_3> points_from_polyline(
