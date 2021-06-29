@@ -64,12 +64,20 @@ std::vector<Point_3> extruded_area(IFC2X3::IfcExtrudedAreaSolid const* ext) {
   return vertices;
 }
 
-// TODO(Farnaz): Testing
+// An IFC2X3::IfcRevolvedAreaSolid has three distinct fields.
+// SweptArea_ is the point cloud that gets revolved.
+// Angle_ is the amount of rotation.
+// Axis_ is the rotation axis as unit vector.
+//
+// For more general information and a 3d animation:
+// https://en.wikipedia.org/wiki/Solid_of_revolution
 std::vector<Point_3> revolved_area(IFC2X3::IfcRevolvedAreaSolid const* rev) {
   std::vector<Point_3> vertices;
   auto swept_area = profile_def_handler(rev->SweptArea_);
-  auto angle_step = static_cast<double>(ifcgeom::render_resolution) / 360.0;
-  auto steps = static_cast<unsigned>(rev->Angle_ * 180 / M_PI * angle_step);
+  double constexpr angle_step_rad =
+      static_cast<double>(ifcgeom::render_resolution) / 360.0;
+  double constexpr angle_step_deg = angle_step_rad * 180 / M_PI;
+  auto steps = static_cast<unsigned>(rev->Angle_ * angle_step_deg);
   auto rot_angle = rev->Angle_ / static_cast<double>(steps);
   for (unsigned i = 1; i <= steps; ++i) {
     for (auto const pt : swept_area) {
