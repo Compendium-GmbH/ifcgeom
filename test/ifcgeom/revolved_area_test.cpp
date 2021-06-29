@@ -1,5 +1,7 @@
 #include "IFC2X3/IfcDirection.h"
+
 #include "doctest/doctest.h"
+
 #include "ifcgeom/core/context.h"
 #include "ifcgeom/geometric_repr_item/solid_model.h"
 
