@@ -9,6 +9,7 @@
 #include "IFC2X3/IfcProductDefinitionShape.h"
 #include "IFC2X3/IfcRepresentation.h"
 #include "IFC2X3/IfcRepresentationItem.h"
+#include "IFC2X3/IfcShapeRepresentation.h"
 
 #include "ifcgeom/geometric_repr_item.h"
 #include "ifcgeom/mapped_item.h"
@@ -48,9 +49,9 @@ inline std::vector<Point_3> gather_product_vertices(
     return vec;
   }
 
-  auto pds = dynamic_cast<IFC2X3::IfcProductDefinitionShape const*>(
-      p->Representation_.value());
-  utl::concat(vec, gather_vertices(pds));
+  utl::concat(vec, gather_vertices(
+                       dynamic_cast<IFC2X3::IfcProductDefinitionShape const*>(
+                           p->Representation_.value())));
 
   auto shapes = repr_by_guid(ctx.element_part_map_, p->GlobalId_);
   for (auto const shape : shapes) {

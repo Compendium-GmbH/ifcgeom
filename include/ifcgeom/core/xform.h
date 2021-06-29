@@ -13,22 +13,22 @@
 namespace ifcgeom {
 
 inline Xform_3 matrix(IFC2X3::IfcAxis2Placement2D const* a2p) {
-  auto axisZ = Vector_3{0, 0, 1};
-  auto axisX = a2p->RefDirection_.has_value()
-                   ? to_vector_3(a2p->RefDirection_.value())
-                   : Vector_3{1, 0, 0};
-  auto axisY = CGAL::cross_product(axisZ, axisX);
+  auto const axisZ = Vector_3{0, 0, 1};
+  auto const axisX = a2p->RefDirection_.has_value()
+                         ? to_vector_3(a2p->RefDirection_.value())
+                         : Vector_3{1, 0, 0};
+  auto const axisY = CGAL::cross_product(axisZ, axisX);
   Point_3 location = to_point_3(a2p->Location_);
   return Xform_3{axisX.x(), axisY.x(), axisZ.x(), location.x(),
                  axisX.y(), axisY.y(), axisZ.y(), location.y(),
                  axisX.z(), axisY.z(), axisZ.z(), location.z()};
 }
 inline Xform_3 matrix(IFC2X3::IfcAxis2Placement3D const* a2p) {
-  auto axisZ = a2p->Axis_.has_value() ? to_vector_3(a2p->Axis_.value())
-                                      : Vector_3{0, 0, 1};
-  auto axisX = a2p->RefDirection_.has_value()
-                   ? to_vector_3(a2p->RefDirection_.value())
-                   : Vector_3{1, 0, 0};
+  auto const axisZ = a2p->Axis_.has_value() ? to_vector_3(a2p->Axis_.value())
+                                            : Vector_3{0, 0, 1};
+  auto const axisX = a2p->RefDirection_.has_value()
+                         ? to_vector_3(a2p->RefDirection_.value())
+                         : Vector_3{1, 0, 0};
   auto axisY = CGAL::cross_product(axisZ, axisX);
   normalize(axisY);  // TODO(Steffen): Testing
   Point_3 location = to_point_3(a2p->Location_);
@@ -57,20 +57,24 @@ inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {
 }
 
 inline Xform_3 cartesian_transformation(
-    IFC2X3::IfcCartesianTransformationOperator const* cto) {
+    IFC2X3::IfcCartesianTransformationOperator const* cto,
+    std::optional<double> const scl2 = std::nullopt,
+    std::optional<double> const scl3 = std::nullopt) {
   auto axisX = cto->Axis1_.has_value() ? to_vector_3(cto->Axis1_.value())
                                        : Vector_3{1, 0, 0};
   auto axisY = cto->Axis2_.has_value() ? to_vector_3(cto->Axis2_.value())
                                        : Vector_3{0, 1, 0};
-  auto axisZ = CGAL::cross_product(axisY, axisX);
+  auto axisZ = CGAL::cross_product(axisX, axisY);
 
   auto const scale = cto->Scale_.has_value() ? cto->Scale_.value() : 1.0;
+  auto const scale2 = scl2.has_value() ? scl2.value() : scale;
+  auto const scale3 = scl3.has_value() ? scl3.value() : scale;
 
   ifcgeom::normalize(axisX, axisY, axisZ);
 
   axisX = scale * axisX;
-  axisY = scale * axisY;
-  axisZ = scale * axisZ;
+  axisY = scale2 * axisY;
+  axisZ = scale3 * axisZ;
 
   auto const xform =
       Xform_3{axisX.x(), axisY.x(),
@@ -83,14 +87,9 @@ inline Xform_3 cartesian_transformation(
   return xform;
 }
 
-inline Xform_3 cartesian_transformation_non_uniform(
+inline Xform_3 cartesian_transformation(
     IFC2X3::IfcCartesianTransformationOperator3DnonUniform const* cto) {
-  return Xform_3{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0};
-}
-
-inline Xform_3 cartesian_transformation_non_uniform(
-    IFC2X3::IfcCartesianTransformationOperator2DnonUniform const* cto) {
-  return Xform_3{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0};
+  return cartesian_transformation(cto, cto->Scale2_, cto->Scale3_);
 }
 
 }  // namespace ifcgeom

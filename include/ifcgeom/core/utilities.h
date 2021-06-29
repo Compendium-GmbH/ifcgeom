@@ -50,7 +50,7 @@ inline Point_2 to_point_2(IFC2X3::IfcCartesianPoint const* cp) {
   return Point_2{cp->Coordinates_.at(0), cp->Coordinates_.at(1)};
 }
 
-inline void print(Point_3 const& pt, unsigned precision = 16U) {
+inline void print(Point_3 const& pt, int precision = 16U) {
   std::cout << std::setprecision(precision) << "Point_3 : (" << pt.x() << ", "
             << pt.y() << ", " << pt.z() << ")" << std::endl;
 }
