@@ -131,4 +131,36 @@ inline std::vector<Point_3> translate(std::vector<Point_3> const& pts,
   return points;
 }
 
+// Returns the Rotation of a given point around axis with an angle in degrees.
+// Assumes axis is normalized.
+// Assumes angle in degrees.
+inline Point_3 rotate(Point_3 const& pt, IFC2X3::IfcAxis1Placement const* a1p,
+                      double const& angle_deg) {
+  // get axis
+  auto const axis = a1p->Axis_.has_value() ? to_vector_3(a1p->Axis_.value())
+                                           : Vector_3{1, 0, 0};
+
+  double constexpr deg_to_rad = M_PI / 180;
+  double const angle_rad = angle_deg * deg_to_rad;
+  // precompute angle
+  double const cos_angle = std::cos(angle_rad);
+  double const one_minus_cos_angle = 1.0 - cos_angle;
+  double const sin_angle = std::sin(angle_rad);
+
+  Xform_3 rotation_matrix{
+      cos_angle + axis.x() * axis.x() * one_minus_cos_angle,
+      axis.x() * axis.y() * one_minus_cos_angle - axis.z() * sin_angle,
+      axis.x() * axis.z() * one_minus_cos_angle + axis.y() * sin_angle,
+      0,
+      axis.y() * axis.x() * one_minus_cos_angle + axis.z() * sin_angle,
+      cos_angle + axis.y() * axis.y() * one_minus_cos_angle,
+      axis.y() * axis.z() * one_minus_cos_angle - axis.x() * sin_angle,
+      0,
+      axis.z() * axis.x() * one_minus_cos_angle - axis.y() * sin_angle,
+      axis.z() * axis.y() * one_minus_cos_angle + axis.x() * sin_angle,
+      cos_angle + axis.z() * axis.z() * one_minus_cos_angle,
+      0};
+
+  return rotation_matrix.transform(pt);
+}
 }  // namespace ifcgeom

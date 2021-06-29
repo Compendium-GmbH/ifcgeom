@@ -24,8 +24,10 @@ std::vector<Point_3> faceted_brep_with_voids(
     IFC2X3::IfcFacetedBrepWithVoids const* brep);
 
 std::vector<Point_3> extruded_area(IFC2X3::IfcExtrudedAreaSolid const* ext);
+
 std::vector<Point_3> revolved_area(
     IFC2X3::IfcRevolvedAreaSolid const* revolved);
+
 std::vector<Point_3> surface_curve(
     IFC2X3::IfcSurfaceCurveSweptAreaSolid const* crv);
 
