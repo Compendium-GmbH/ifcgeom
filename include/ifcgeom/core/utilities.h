@@ -139,4 +139,19 @@ inline std::vector<Point_3> translate(std::vector<Point_3> const& pts,
   return points;
 }
 
+inline Point_3 approx_centroid(std::vector<Point_3> vertices) {
+  auto n_points = vertices.size();
+  auto x = 0.0;
+  auto y = 0.0;
+  auto z = 0.0;
+
+  for (auto const& v : vertices) {
+    x += v.x();
+    y += v.y();
+    z += v.z();
+  }
+
+  return Point_3{x / n_points, y / n_points, z / n_points};
+}
+
 }  // namespace ifcgeom

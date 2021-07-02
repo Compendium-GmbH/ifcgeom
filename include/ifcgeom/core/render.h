@@ -16,11 +16,30 @@
 #include "ifcgeom/styled_item.h"
 #include "ifcgeom/topological_repr_item.h"
 
+#include "ifcgeom/core/context.h"
 #include "ifcgeom/core/match.h"
-
 #include "ifcgeom/core/queries.h"
+#include "ifcgeom/core/xform.h"
 
 namespace ifcgeom {
+
+inline std::vector<Point_3> gather_vertices(
+    IFC2X3::IfcRepresentation const* repr) {
+  auto vec = std::vector<Point_3>{};
+
+  auto acc_vertices =
+      [&](std::vector<IFC2X3::IfcRepresentationItem*> const& items) {
+        for (auto const item : items) {
+          utl::concat(vec, match(item, topological_repr_item_handler,
+                                 geometric_repr_item_handler, mapped_item,
+                                 styled_item));
+        }
+      };
+
+  acc_vertices(repr->Items_);
+
+  return vec;
+}
 
 inline std::vector<Point_3> gather_vertices(
     IFC2X3::IfcProductDefinitionShape const* pds) {
@@ -35,8 +54,8 @@ inline std::vector<Point_3> gather_vertices(
         }
       };
 
-  for (auto const repr : pds->Representations_) {
-    acc_vertices(repr->Items_);
+  for (auto const r : pds->Representations_) {
+    acc_vertices(r->Items_);
   }
 
   return vec;
@@ -58,6 +77,10 @@ inline std::vector<Point_3> gather_product_vertices(
     auto pds = dynamic_cast<IFC2X3::IfcProductDefinitionShape const*>(shape);
     utl::concat(vec, gather_vertices(pds));
   }
+
+  auto const local_plcmt = reinterpret_cast<IFC2X3::IfcLocalPlacement const*>(
+      p->ObjectPlacement_.value());
+  vec = ifcgeom::cartesian_transformation(local_plcmt, vec);
 
   return vec;
 }

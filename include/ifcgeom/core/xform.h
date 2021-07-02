@@ -37,29 +37,27 @@ inline Xform_3 matrix(IFC2X3::IfcAxis2Placement3D const* a2p) {
                  axisX.z(), axisY.z(), axisZ.z(), location.z()};
 }
 
-inline Xform_3 h_transform(IFC2X3::IfcLocalPlacement const* lp) {
+inline Xform_3 h_transformation(IFC2X3::IfcLocalPlacement const* lp) {
   Xform_3 res;
   if (lp->PlacementRelTo_.has_value()) {
     auto const rel_lp = reinterpret_cast<IFC2X3::IfcLocalPlacement const*>(
         lp->PlacementRelTo_.value());
-    auto const rel_plcmt = rel_lp->RelativePlacement_.data_;
+    auto const rel_plcmt = lp->RelativePlacement_.data_;
     Xform_3 xform;
     if (std::holds_alternative<IFC2X3::IfcAxis2Placement2D*>(rel_plcmt)) {
       xform = matrix(std::get<IFC2X3::IfcAxis2Placement2D*>(rel_plcmt));
     } else {
       xform = matrix(std::get<IFC2X3::IfcAxis2Placement3D*>(rel_plcmt));
     }
-    res = xform * h_transform(rel_lp);
+    res = xform * h_transformation(rel_lp);
   } else {
     res = Xform_3{1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0};
   }
   return res;
 }
 
-inline Xform_3 cartesian_transformation(
-    IFC2X3::IfcCartesianTransformationOperator const* cto,
-    std::optional<double> const scl2 = std::nullopt,
-    std::optional<double> const scl3 = std::nullopt) {
+inline Xform_3 h_transformation(
+    IFC2X3::IfcCartesianTransformationOperator const* cto) {
   auto axisX = cto->Axis1_.has_value() ? to_vector_3(cto->Axis1_.value())
                                        : Vector_3{1, 0, 0};
   auto axisY = cto->Axis2_.has_value() ? to_vector_3(cto->Axis2_.value())
@@ -67,8 +65,15 @@ inline Xform_3 cartesian_transformation(
   auto axisZ = CGAL::cross_product(axisX, axisY);
 
   auto const scale = cto->Scale_.has_value() ? cto->Scale_.value() : 1.0;
-  auto const scale2 = scl2.has_value() ? scl2.value() : scale;
-  auto const scale3 = scl3.has_value() ? scl3.value() : scale;
+  auto scale2 = scale;
+  auto scale3 = scale;
+
+  if (auto const casted = dynamic_cast<
+          IFC2X3::IfcCartesianTransformationOperator3DnonUniform const*>(cto);
+      casted != nullptr) {
+    scale2 = casted->Scale2_.has_value() ? casted->Scale2_.value() : scale;
+    scale3 = casted->Scale3_.has_value() ? casted->Scale3_.value() : scale;
+  }
 
   ifcgeom::normalize(axisX, axisY, axisZ);
 
@@ -76,20 +81,47 @@ inline Xform_3 cartesian_transformation(
   axisY = scale2 * axisY;
   axisZ = scale3 * axisZ;
 
-  auto const xform =
-      Xform_3{axisX.x(), axisY.x(),
-              axisZ.x(), cto->LocalOrigin_->Coordinates_.at(0) * scale,
-              axisX.y(), axisY.y(),
-              axisZ.y(), cto->LocalOrigin_->Coordinates_.at(1) * scale,
-              axisX.z(), axisY.z(),
-              axisZ.z(), cto->LocalOrigin_->Coordinates_.at(2) * scale};
+  auto const xform = Xform_3{
+      axisX.x(), axisY.x(), axisZ.x(), cto->LocalOrigin_->Coordinates_.at(0),
+      axisX.y(), axisY.y(), axisZ.y(), cto->LocalOrigin_->Coordinates_.at(1),
+      axisX.z(), axisY.z(), axisZ.z(), cto->LocalOrigin_->Coordinates_.at(2)};
 
   return xform;
 }
 
-inline Xform_3 cartesian_transformation(
-    IFC2X3::IfcCartesianTransformationOperator3DnonUniform const* cto) {
-  return cartesian_transformation(cto, cto->Scale2_, cto->Scale3_);
+inline std::vector<Point_3> cartesian_transformation(
+    IFC2X3::IfcCartesianTransformationOperator const* cto,
+    std::vector<Point_3> const& vertices) {
+  auto res = std::vector<Point_3>{};
+
+  for (auto const v : vertices) {
+    res.emplace_back(v.transform(h_transformation(cto)));
+  }
+
+  return res;
+}
+
+inline std::vector<Point_3> cartesian_transformation(
+    IFC2X3::IfcLocalPlacement const* lp, std::vector<Point_3> const& vertices) {
+  auto res = std::vector<Point_3>{};
+  auto xform = h_transformation(lp);
+
+  for (auto const v : vertices) {
+    res.emplace_back(v.transform(xform));
+  }
+
+  return res;
+}
+
+inline std::vector<Point_3> cartesian_transformation(
+    Xform_3 const& xform, std::vector<Point_3> const& vertices) {
+  auto res = std::vector<Point_3>{};
+
+  for (auto const v : vertices) {
+    res.emplace_back(v.transform(xform));
+  }
+
+  return res;
 }
 
 }  // namespace ifcgeom

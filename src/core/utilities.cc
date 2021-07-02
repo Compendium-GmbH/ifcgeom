@@ -1,4 +1,4 @@
-#include "ifcgeom/utilities.h"
+#include "ifcgeom/core/utilities.h"
 
 #include <ostream>
 
