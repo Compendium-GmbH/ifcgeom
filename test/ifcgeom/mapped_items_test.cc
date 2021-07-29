@@ -105,7 +105,7 @@ TEST_CASE("mapping source transformation") {
                                                      ->Representations_.at(0)
                                                      ->Items_.at(0));
 
-  auto const mapping_origin = mapped_item->MappingSource_->MappingOrigin_;
+  //  auto const mapping_origin = mapped_item->MappingSource_->MappingOrigin_;
 
   auto const src_vertices = ifcgeom::gather_vertices(
       mapped_item->MappingSource_->MappedRepresentation_);

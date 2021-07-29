@@ -5,32 +5,32 @@ include(cmake/pkg.cmake)
 
 option(IFCGEOM_LINT "Run clang-tidy with the compiler." OFF)
 if (IFCGEOM_LINT)
-    include(cmake/clang-tidy.cmake)
+  include(cmake/clang-tidy.cmake)
 endif ()
 
 express2cpp(deps/express2cpp/express/test/ifc23.txt ifc2x3)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-    set(ifcgeom-compile-flags
-            -Wno-global-constructors
-            -Wno-exit-time-destructors
-            -fno-strict-aliasing
-            -Weverything
-            -Wno-c++98-compat
-            -Wno-c++98-compat-pedantic
-            -Wno-newline-eof
-            -Wno-missing-prototypes
-            -Wno-padded
-            -Wno-double-promotion
-            -Wno-undef
-            -Wno-undefined-reinterpret-cast
-            -Wno-float-conversion
-            -Wno-return-std-move-in-c++11
-            -Wno-gnu-zero-variadic-macro-arguments
-            -Wno-unknown-pragmas
-            -Wno-documentation-unknown-command
-            -Werror
-            )
+  set(ifcgeom-compile-flags
+      -Wno-global-constructors
+      -Wno-exit-time-destructors
+      -fno-strict-aliasing
+      -Weverything
+      -Wno-c++98-compat
+      -Wno-c++98-compat-pedantic
+      -Wno-newline-eof
+      -Wno-missing-prototypes
+      -Wno-padded
+      -Wno-double-promotion
+      -Wno-undef
+      -Wno-undefined-reinterpret-cast
+      -Wno-float-conversion
+      -Wno-return-std-move-in-c++11
+      -Wno-gnu-zero-variadic-macro-arguments
+      -Wno-unknown-pragmas
+      -Wno-documentation-unknown-command
+      -Werror
+      )
 endif ()
 
 
@@ -56,6 +56,11 @@ add_executable(scan-render-errors exe/scan_render_errors.cc)
 target_compile_options(scan-render-errors PRIVATE ${ifcgeom-compile-flags})
 target_link_libraries(scan-render-errors ifcgeom)
 target_compile_features(scan-render-errors PUBLIC cxx_std_17)
+
+add_executable(compare-geom exe/compare_geom.cc)
+target_compile_options(compare-geom PRIVATE ${ifcgeom-compile-flags})
+target_link_libraries(compare-geom ifcgeom)
+target_compile_features(compare-geom PUBLIC cxx_std_17)
 
 # TEST
 file(GLOB_RECURSE ifcgeom-test-files test/*.cc)

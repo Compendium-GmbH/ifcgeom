@@ -41,6 +41,7 @@ std::vector<Point_3> faceted_brep(IFC2X3::IfcFacetedBrep const* brep) {
   }
   return vertices;
 }
+
 std::vector<Point_3> faceted_brep_with_voids(
     IFC2X3::IfcFacetedBrepWithVoids const* brep) {
   std::vector<Point_3> vertices;

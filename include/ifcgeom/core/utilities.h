@@ -151,7 +151,9 @@ inline Point_3 approx_centroid(std::vector<Point_3> vertices) {
     z += v.z();
   }
 
-  return Point_3{x / n_points, y / n_points, z / n_points};
+  return Point_3{x / static_cast<double>(n_points),
+                 y / static_cast<double>(n_points),
+                 z / static_cast<double>(n_points)};
 }
 
 }  // namespace ifcgeom

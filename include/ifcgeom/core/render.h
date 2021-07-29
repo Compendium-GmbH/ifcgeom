@@ -82,6 +82,8 @@ inline std::vector<Point_3> gather_product_vertices(
       p->ObjectPlacement_.value());
   vec = ifcgeom::cartesian_transformation(local_plcmt, vec);
 
+  std::sort(begin(vec), end(vec));
+
   return vec;
 }
 
