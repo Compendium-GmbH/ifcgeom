@@ -20,7 +20,7 @@ TEST_CASE("geometry identification") {
   for (auto const v : vertices) {
     std::cout << v << "\n";
   }
-  std::cout << ifcgeom::geom_hash(vertices) << std::endl;
+  std::cout << ifcgeom::geom_hash<true>(vertices) << std::endl;
 }
 
 TEST_CASE("geometry matching 1") {
