@@ -144,7 +144,7 @@ std::vector<Point_3> arbitrary_profile_def(
 }
 std::vector<Point_3> arbitrary_profile_def_with_voids(
     IFC2X3::IfcArbitraryProfileDefWithVoids const* profile) {
-  // TODO(ANYONE): IMPLEMENT VOIDS !
+  // TODO(anyone): Implement voids
   return curve_handler(profile->OuterCurve_);
 }
 

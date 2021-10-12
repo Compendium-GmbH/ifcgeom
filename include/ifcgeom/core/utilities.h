@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iomanip>
+#include <iostream>
 #include <vector>
 
 #include "IFC2X3/IfcAxis1Placement.h"
@@ -48,9 +50,9 @@ inline Point_2 to_point_2(IFC2X3::IfcCartesianPoint const* cp) {
   return Point_2{cp->Coordinates_.at(0), cp->Coordinates_.at(1)};
 }
 
-inline void print(Point_3 const& pt) {
-  std::cout << "Point_3 : X=" << pt.x() << " Y=" << pt.y() << " Z=" << pt.z()
-            << std::endl;
+inline void print(Point_3 const& pt, int precision = 16U) {
+  std::cout << std::setprecision(precision) << "Point_3 : (" << pt.x() << ", "
+            << pt.y() << ", " << pt.z() << ")" << std::endl;
 }
 inline void print(Vector_3 const& vec) {
   std::cout << "Point_3 : X=" << vec.x() << " Y=" << vec.y() << " Z=" << vec.z()
@@ -93,6 +95,12 @@ inline void normalize(Vector_3& vec) {
   vec /= std::sqrt(s_length);
 }
 
+inline void normalize(Vector_3& v1, Vector_3& v2, Vector_3& v3) {
+  normalize(v1);
+  normalize(v2);
+  normalize(v3);
+}
+
 inline std::vector<Point_3> points_from_polyline(
     IFC2X3::IfcPolyline const* polyline) {
   std::vector<Point_3> points;
@@ -129,6 +137,23 @@ inline std::vector<Point_3> translate(std::vector<Point_3> const& pts,
     point += d;
   }
   return points;
+}
+
+inline Point_3 approx_centroid(std::vector<Point_3> vertices) {
+  auto n_points = vertices.size();
+  auto x = 0.0;
+  auto y = 0.0;
+  auto z = 0.0;
+
+  for (auto const& v : vertices) {
+    x += v.x();
+    y += v.y();
+    z += v.z();
+  }
+
+  return Point_3{x / static_cast<double>(n_points),
+                 y / static_cast<double>(n_points),
+                 z / static_cast<double>(n_points)};
 }
 
 }  // namespace ifcgeom

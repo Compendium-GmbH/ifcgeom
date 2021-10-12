@@ -14,8 +14,6 @@ auto match(Parent&& p, Fn&& f) {
       casted != nullptr) {
     return f(casted);
   } else {
-    //auto root = reinterpret_cast<step::root_entity*>(p);
-    // render_err_log.emplace_back(root->name());
     return std::vector<Point_3>{};
   }
 }

@@ -4,6 +4,7 @@
 
 #include "IFC2X3/IfcAxis1Placement.h"
 #include "IFC2X3/IfcAxis2Placement2D.h"
+#include "IFC2X3/IfcAxis2Placement3D.h"
 #include "IFC2X3/IfcClosedShell.h"
 #include "IFC2X3/IfcCsgSolid.h"
 #include "IFC2X3/IfcExtrudedAreaSolid.h"
@@ -20,6 +21,7 @@
 #include "ifcgeom/core/context.h"
 #include "ifcgeom/core/match.h"
 #include "ifcgeom/core/utilities.h"
+#include "ifcgeom/core/xform.h"
 
 #include "ifcgeom/geometric_repr_item/profile_def.h"
 #include "ifcgeom/topological_repr_item/loop.h"
@@ -39,6 +41,7 @@ std::vector<Point_3> faceted_brep(IFC2X3::IfcFacetedBrep const* brep) {
   }
   return vertices;
 }
+
 std::vector<Point_3> faceted_brep_with_voids(
     IFC2X3::IfcFacetedBrepWithVoids const* brep) {
   std::vector<Point_3> vertices;
@@ -61,7 +64,11 @@ std::vector<Point_3> extruded_area(IFC2X3::IfcExtrudedAreaSolid const* ext) {
   utl::concat(vertices, profile_def_handler(ext->SweptArea_));
   auto t_pts = translate(vertices, extrude_dir);
   vertices.insert(vertices.end(), t_pts.begin(), t_pts.end());
-  return vertices;
+
+  auto vertices_tr = ifcgeom::cartesian_transformation(
+      ifcgeom::matrix(ext->Position_), vertices);
+
+  return vertices_tr;
 }
 
 std::vector<Point_3> revolved_area(

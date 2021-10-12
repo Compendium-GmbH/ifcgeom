@@ -1,7 +1,6 @@
 #include "CGAL/Polygon_mesh_processing/measure.h"
 #include "CGAL/convex_hull_3.h"
 
-#include "ifcgeom/core/analysis.h"
 #include "ifcgeom/core/context.h"
 #include "ifcgeom/core/render.h"
 

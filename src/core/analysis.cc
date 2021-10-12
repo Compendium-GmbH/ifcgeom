@@ -25,18 +25,21 @@ void iterate_repr(IFC2X3::IfcProductRepresentation const* prod) {
 }
 
 void list_geometry_types(std::string const& path) {
+  auto n_products = 0;
   auto ctx = ifcgeom::context{path};
   auto products = ifcgeom::filter_entities<IFC2X3::IfcProduct>(ctx.model_);
   for (auto const p : products) {
     if (!p->Representation_.has_value()) {
       continue;
     }
+    ++n_products;
     iterate_repr(p->Representation_.value());
     auto shapes = ifcgeom::repr_by_guid(ctx.element_part_map_, p->GlobalId_);
     for (auto const repr : shapes) {
       iterate_repr(repr);
     }
   }
+  std::cout << "n_products = " << n_products << "\n";
 }
 
 }  // namespace ifcgeom
